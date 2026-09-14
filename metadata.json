@@ -1,0 +1,7 @@
+{
+  "name": "Goldmine",
+  "description": "Goldmine - Local business intelligence and discovery service with deterministic quality ranking, PageSpeed audits, AI website analysis, and Search grounded AI visibility testing.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
+
