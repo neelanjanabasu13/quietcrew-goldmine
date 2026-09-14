@@ -3100,10 +3100,14 @@ app.get("/api/spotlight", async (req: Request, res: Response) => {
   res.json(spotlight);
 });
 
-// Serve frontend static files
-app.use(express.static(process.cwd()));
+// Serve the production bundle when it exists; local TypeScript development
+// continues to serve the source root.
+const staticDirectory = fs.existsSync(path.join(process.cwd(), "dist", "index.html"))
+  ? path.join(process.cwd(), "dist")
+  : process.cwd();
+app.use(express.static(staticDirectory));
 app.get("*", (req: Request, res: Response) => {
-  const indexPath = path.join(process.cwd(), "index.html");
+  const indexPath = path.join(staticDirectory, "index.html");
   if (fs.existsSync(indexPath)) {
     res.sendFile(indexPath);
   } else {
