@@ -51,6 +51,32 @@ const QUERY_CACHE_TTL_MS = 7 * 24 * 60 * 60 * 1_000;
 const firestoreProject = process.env.GOOGLE_CLOUD_PROJECT || process.env.GCLOUD_PROJECT;
 const firestore = firestoreProject ? new Firestore({ projectId: firestoreProject }) : null;
 
+type VisibilityProvider = "gemini" | "openai" | "anthropic";
+
+async function callOpenAIVisibility(prompt: string): Promise<string> {
+  const key = process.env.OPENAI_API_KEY;
+  if (!key) throw new Error("OPENAI_API_KEY is not configured");
+  const response = await fetch("https://api.openai.com/v1/chat/completions", { method: "POST", headers: { "Content-Type": "application/json", Authorization: `Bearer ${key}` }, body: JSON.stringify({ model: process.env.OPENAI_MODEL || "gpt-4o-mini", temperature: 0, messages: [{ role: "user", content: prompt }] }) });
+  if (!response.ok) throw new Error(`OpenAI returned HTTP ${response.status}`);
+  const data: any = await response.json(); return String(data.choices?.[0]?.message?.content || "");
+}
+
+async function callAnthropicVisibility(prompt: string): Promise<string> {
+  const key = process.env.ANTHROPIC_API_KEY;
+  if (!key) throw new Error("ANTHROPIC_API_KEY is not configured");
+  const response = await fetch("https://api.anthropic.com/v1/messages", { method: "POST", headers: { "Content-Type": "application/json", "x-api-key": key, "anthropic-version": "2023-06-01" }, body: JSON.stringify({ model: process.env.ANTHROPIC_MODEL || "claude-3-5-haiku-latest", max_tokens: 700, temperature: 0, messages: [{ role: "user", content: prompt }] }) });
+  if (!response.ok) throw new Error(`Anthropic returned HTTP ${response.status}`);
+  const data: any = await response.json(); return String(data.content?.[0]?.text || "");
+}
+
+function parseProviderAnswer(text: string, query: string): GroundedQueryResult {
+  try {
+    const parsed = JSON.parse(text.replace(/^```json\s*/i, "").replace(/\s*```$/, ""));
+    const businesses = Array.isArray(parsed.businesses) ? parsed.businesses : Array.isArray(parsed.results) ? parsed.results : [];
+    return { query, answer_text: String(parsed.answer_text || parsed.answer || text).slice(0, 4000), named_list: businesses.map((b: any, i: number) => ({ name: String(b.name || ""), rank: Number(b.rank || i + 1) })).filter((b: any) => b.name), tested_at: new Date().toISOString() };
+  } catch { return { query, answer_text: text.slice(0, 4000), named_list: [], tested_at: new Date().toISOString() }; }
+}
+
 // Gemini client initialization
 function getGenAI(): GoogleGenAI {
   const project = process.env.GOOGLE_CLOUD_PROJECT || process.env.GCLOUD_PROJECT;
@@ -2257,8 +2283,9 @@ async function runDiscoveryPipeline(
         async ([loc, groupBusinesses]) => {
           const localityQueries = await getOrGenerateQueries(category, loc);
           for (const b of groupBusinesses) {
-            b.ai = {
-              queries: localityQueries.map((query) => ({ query, status: "pending", mentioned: false, rank: null, answer_text: "", verbatim_answer: "" })),
+          b.ai = {
+              queries: localityQueries.map((query) => ({ query, status: "pending", mentioned: false, rank: null, answer_text: "", verbatim_answer: "", providers: {} })),
+              providers: { gemini: { status: "pending" }, openai: { status: "pending" }, anthropic: { status: "pending" } },
               mentions: 0,
               total: localityQueries.length,
               untested: 0,
@@ -2379,6 +2406,37 @@ async function runDiscoveryPipeline(
         }
       }
 
+      // Run the same customer questions through OpenAI and Anthropic as well.
+      // Their provider-specific evidence is retained alongside Gemini so the
+      // report can show a real three-model comparison.
+      const providerPrompt = (query: string) => `You are answering a customer looking for local businesses in ${location}. Return JSON only: {"answer_text":"your recommendation answer","businesses":[{"name":"business name","rank":1}]}. Recommend up to five real businesses for this exact query. Customer query: ${query}`;
+      await runWithConcurrency(groups, 1, async ({ groupBusinesses, groupNormalized, localityQueries }) => {
+        await runWithConcurrency(localityQueries.map((query, qIdx) => ({ query, qIdx })), 3, async ({ query, qIdx }) => {
+          const entryResults = await Promise.allSettled([
+            callOpenAIVisibility(providerPrompt(query)),
+            callAnthropicVisibility(providerPrompt(query)),
+          ]);
+          const names = ["openai", "anthropic"] as const;
+          entryResults.forEach((result, index) => {
+            const provider = names[index];
+            const providerResult = groupBusinesses.map((business) => business.ai.queries[qIdx]);
+            if (result.status === "fulfilled") {
+              const parsed = parseProviderAnswer(result.value, query);
+              const providerNames = parsed.named_list.map((item) => item.name);
+              for (const entry of providerResult) entry.providers[provider] = { status: "tested", mentioned: false, answer_text: parsed.answer_text };
+              for (const named of providerNames) {
+                const tokens = new Set(normalizeName(named).split(" ").filter(Boolean));
+                const match = groupNormalized.find((candidate) => calculateTokenOverlap(tokens, candidate.tokens) >= 0.65);
+                if (match) match.business.ai.queries[qIdx].providers[provider].mentioned = true;
+              }
+              groupBusinesses.forEach((business) => { if (business.ai.queries[qIdx].providers[provider]?.mentioned) business.ai.providers[provider] = { status: "tested" }; });
+            } else {
+              for (const entry of providerResult) entry.providers[provider] = { status: "failed", failure_reason: String(result.reason?.message || result.reason || "Provider unavailable") };
+            }
+          });
+        });
+      });
+
       // Calculate visibility scores directly from the stored ai.queries array
       for (const b of top20) {
         const testedQueries = (b.ai.queries || []).filter((q: any) => q.status === "tested");
@@ -2391,6 +2449,11 @@ async function runDiscoveryPipeline(
         b.ai.total = testedTotal;
         b.ai.untested = failedQueries.length;
         b.ai.visibility = visibility;
+        for (const provider of ["gemini", "openai", "anthropic"] as const) {
+          const tested = (b.ai.queries || []).filter((q: any) => q.providers?.[provider]?.status === "tested");
+          const mentionsByProvider = tested.filter((q: any) => q.providers?.[provider]?.mentioned).length;
+          b.ai.providers[provider] = { status: tested.length ? "tested" : "unavailable", mentions: mentionsByProvider, total: tested.length, visibility: tested.length ? Math.round(100 * mentionsByProvider / tested.length) : 0 };
+        }
         b.visibility_score = visibility;
       }
 
