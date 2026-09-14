@@ -49,7 +49,12 @@ function hasCompleteAiVisibility(business: any): boolean {
 }
 const QUERY_CACHE_TTL_MS = 7 * 24 * 60 * 60 * 1_000;
 const firestoreProject = process.env.GOOGLE_CLOUD_PROJECT || process.env.GCLOUD_PROJECT;
-const firestore = firestoreProject ? new Firestore({ projectId: firestoreProject }) : null;
+// Local runs should not attempt Firestore unless explicitly enabled. A project
+// ID alone is not enough to provide application credentials and previously
+// caused the local server to crash during /api/health.
+const firestore = firestoreProject && process.env.USE_FIRESTORE === "true"
+  ? new Firestore({ projectId: firestoreProject })
+  : null;
 
 type VisibilityProvider = "gemini" | "openai" | "anthropic";
 
