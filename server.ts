@@ -69,7 +69,7 @@ async function callOpenAIVisibility(prompt: string): Promise<string> {
 async function callAnthropicVisibility(prompt: string): Promise<string> {
   const key = process.env.ANTHROPIC_API_KEY;
   if (!key) throw new Error("ANTHROPIC_API_KEY is not configured");
-  const response = await fetch("https://api.anthropic.com/v1/messages", { method: "POST", headers: { "Content-Type": "application/json", "x-api-key": key, "anthropic-version": "2023-06-01" }, body: JSON.stringify({ model: process.env.ANTHROPIC_MODEL || "claude-3-5-haiku-latest", max_tokens: 700, temperature: 0, messages: [{ role: "user", content: prompt }] }) });
+  const response = await fetch("https://api.anthropic.com/v1/messages", { method: "POST", headers: { "Content-Type": "application/json", "x-api-key": key, "anthropic-version": "2023-06-01" }, body: JSON.stringify({ model: process.env.ANTHROPIC_MODEL || "claude-haiku-4-5", max_tokens: 700, temperature: 0, messages: [{ role: "user", content: prompt }] }) });
   if (!response.ok) throw new Error(`Anthropic returned HTTP ${response.status}`);
   const data: any = await response.json(); return String(data.content?.[0]?.text || "");
 }
@@ -84,6 +84,9 @@ function parseProviderAnswer(text: string, query: string): GroundedQueryResult {
 
 // Gemini client initialization
 function getGenAI(): GoogleGenAI {
+  if (!process.env.GOOGLE_APPLICATION_CREDENTIALS && !process.env.GOOGLE_GENAI_USE_VERTEXAI) {
+    throw new Error("Gemini is not authenticated locally. Configure Google application credentials or use a Gemini API key.");
+  }
   const project = process.env.GOOGLE_CLOUD_PROJECT || process.env.GCLOUD_PROJECT;
   if (!project) {
     throw new Error("GOOGLE_CLOUD_PROJECT is required for Vertex AI");
