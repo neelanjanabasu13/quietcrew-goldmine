@@ -1,3 +1,4 @@
+import { engineAuth } from "./engine-auth.mjs";
 import { partialOutreach } from "./partial-outreach.mjs";
 import express, { Request, Response } from "express";
 import path from "path";
@@ -14,6 +15,7 @@ const app = express();
 const PORT = Number(process.env.PORT || 3000);
 
 app.use(express.json({ limit: "10mb" }));
+app.use("/api", engineAuth({ token: process.env.GOLDMINE_ENGINE_TOKEN, production: process.env.NODE_ENV === "production" }));
 
 // Model constants
 const MODEL = process.env.GEMINI_MODEL || "gemini-3.7-flash";
@@ -2834,7 +2836,10 @@ app.post("/api/outreach/:placeId", async (req: Request, res: Response) => {
   // A run is the authoritative evidence snapshot for this action. Prefer its
   // fully completed result over an older business document, which may have
   // been saved by a previous partial scan of the same place.
-  const persistedBusiness = await dbGetBusiness(placeId);
+  if (process.env.NODE_ENV === "production" && !body.run_id) {
+    res.status(400).json({ error: "run_id is required" }); return;
+  }
+  const persistedBusiness = body.run_id ? null : await dbGetBusiness(placeId);
   let business: any = null;
   const runs = await dbListRuns();
   const matchingRunResults = runs
