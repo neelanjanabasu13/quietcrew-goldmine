@@ -1,3 +1,4 @@
+import { partialOutreach } from "./partial-outreach.mjs";
 import express, { Request, Response } from "express";
 import path from "path";
 import fs from "fs";
@@ -84,8 +85,12 @@ function parseProviderAnswer(text: string, query: string): GroundedQueryResult {
 
 // Gemini client initialization
 function getGenAI(): GoogleGenAI {
-  if (!process.env.GOOGLE_APPLICATION_CREDENTIALS && !process.env.GOOGLE_GENAI_USE_VERTEXAI) {
-    throw new Error("Gemini is not authenticated locally. Configure Google application credentials or use a Gemini API key.");
+  const apiKey = process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY;
+  if (apiKey) {
+    return new GoogleGenAI({ apiKey, vertexai: false });
+  }
+  if (!process.env.GOOGLE_APPLICATION_CREDENTIALS && process.env.GOOGLE_GENAI_USE_VERTEXAI !== "true") {
+    throw new Error("Gemini key missing: save your Google AI Studio key as GEMINI_API_KEY in .env. Your Maps key and billing credit do not provide Gemini authentication.");
   }
   const project = process.env.GOOGLE_CLOUD_PROJECT || process.env.GCLOUD_PROJECT;
   if (!project) {
@@ -2457,6 +2462,9 @@ async function runDiscoveryPipeline(
         b.ai.total = testedTotal;
         b.ai.untested = failedQueries.length;
         b.ai.visibility = visibility;
+        for (const q of b.ai.queries) {
+          q.providers.gemini = { status: q.status, mentioned: q.mentioned, rank: q.rank, answer_text: q.answer_text, failure_reason: q.failure_reason || null };
+        }
         for (const provider of ["gemini", "openai", "anthropic"] as const) {
           const tested = (b.ai.queries || []).filter((q: any) => q.providers?.[provider]?.status === "tested");
           const mentionsByProvider = tested.filter((q: any) => q.providers?.[provider]?.mentioned).length;
@@ -2830,6 +2838,7 @@ app.post("/api/outreach/:placeId", async (req: Request, res: Response) => {
   let business: any = null;
   const runs = await dbListRuns();
   const matchingRunResults = runs
+    .filter((run: any) => !body.run_id || run.run_id === body.run_id || run.id === body.run_id)
     .flatMap((run: any) => (run.results || []).map((candidate: any) => ({ candidate, finished_at: run.finished_at || run.started_at || "" })))
     .filter(({ candidate }: any) => candidate.place_id === placeId)
     .sort((a: any, b: any) => {
@@ -2850,11 +2859,11 @@ app.post("/api/outreach/:placeId", async (req: Request, res: Response) => {
   }
 
   if (!hasCompleteAiVisibility(business)) {
-    res.status(422).json({ error: "Outreach is unavailable until all ten AI visibility queries have completed." });
-    return;
-  }
-  if (Number(business.ai?.visibility || 0) >= 40) {
-    res.status(422).json({ error: "This business is already visible in AI search and is not a Goldmine outreach prospect." });
+    // Partial evidence must never require a working model or another paid scan.
+    const draft = partialOutreach(business);
+    res.json({ ...draft, email: business.contact?.email || persistedBusiness?.contact?.email || null,
+      source_url: business.contact?.source_url || persistedBusiness?.contact?.source_url || null,
+      place_id: business.place_id, name: business.name });
     return;
   }
 
@@ -2920,7 +2929,7 @@ app.post("/api/outreach/:placeId", async (req: Request, res: Response) => {
 
   const services = String(body.services || business.category || "SEO, websites and AI visibility").trim();
   const missedQueries = (business.ai?.queries || [])
-    .filter((q: any) => !q.mentioned && q.status !== "failed")
+    .filter((q: any) => !q.mentioned && q.status === "tested")
     .map((q: any) => `"${q.query}"`);
 
   let competitorCompFact = "No lower-rated competitor comparison available.";

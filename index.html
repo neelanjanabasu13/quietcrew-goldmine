@@ -261,6 +261,9 @@
         .versus .vs{padding:4px 0}
         .card,.results,.quote,.maths,.email{box-shadow:4px 4px 0 var(--line)}
       }
+      .scan-spinner { display:inline-block; width:12px; height:12px; border:2px solid #d9dedb; border-top-color:var(--teal, #126f73); border-radius:50%; animation:scan-spin .8s linear infinite; vertical-align:middle; margin-right:6px; }
+      @keyframes scan-spin { to { transform:rotate(360deg); } }
+      @media (prefers-reduced-motion: reduce) { .scan-spinner { animation:none; } }
     </style>
   </head>
   <body>
@@ -411,7 +414,7 @@
 
           <div id="agentVisibility" class="agent pending">
             <span class="name">Agent Visibility</span>
-            <span class="role">asking Gemini what customers actually ask</span>
+            <span class="role">checking Gemini, OpenAI and Claude</span>
             <span id="agentVisibilityStatus" class="stat"></span>
           </div>
 
@@ -850,6 +853,8 @@
 
             updateScanUi(doc);
 
+            if (marketResultsShown) renderResultsView(doc);
+
             if (doc.status === "error") {
               clearInterval(pollInterval);
               pollInterval = null;
@@ -1002,7 +1007,7 @@
           return Number(b.gold_score || 0) - Number(a.gold_score || 0);
         });
 
-        const analysisInProgress = runDoc.status !== "complete";
+        const analysisInProgress = !["complete", "error"].includes(runDoc.status);
         document.getElementById("resultsHeadline").textContent =
           `Goldmine found ${results.length} high-reputation local candidates in ${category}, ${location}`;
 
@@ -1012,12 +1017,15 @@
         const discoveryLenses = Number(discovery.query_variants_completed || (Array.isArray(discovery.query_variants) ? discovery.query_variants.length : 1));
         const excludedMultiLocation = Number(discovery.excluded_multi_location_candidates || runDoc.stage_counts?.excluded_multi_location || 0);
         document.getElementById("resultsScope").textContent =
-          `${source} ran ${discoveryLenses} local discovery lens${discoveryLenses === 1 ? "" : "es"} and returned ${returned} unique candidates in the requested area. These are scored candidates, not yet verified outreach prospects: Goldmine verifies independence, website evidence and contact details only when you open a business. This is a candidate cohort, not a complete market census or a Google search/ad ranking.`;
+          `AI mention checks: Gemini, OpenAI (the provider behind ChatGPT), and Claude. ${[["gemini", "Gemini"], ["openai", "OpenAI"], ["anthropic", "Claude"]].map(([id, label]) => { const p = results[0]?.ai?.providers?.[id]; const count = id === "gemini" ? (results[0]?.ai?.queries || []).filter(q => q.status === "tested").length : Number(p?.total || 0); return `${label}: ${count}/10 prompts completed`; }).join(" · ")}. Businesses were discovered using Google Places (${returned} candidates). These are API checks, not measurements of the consumer ChatGPT, Google AI Mode or Claude apps. OpenAI and Claude checks currently run without web search.`;
         const liveNotice = document.getElementById("resultsLiveNotice");
-        liveNotice.style.display = analysisInProgress ? "block" : "none";
-        liveNotice.textContent = analysisInProgress
-          ? "Your local candidate list is ready. Gold scores and evidence are still being built in the background."
-          : "Gold scores based on 6–9 completed queries are labelled provisional. Full ten-query evidence plus independence verification is required before outreach can be sent.";
+        liveNotice.style.display = analysisInProgress || runDoc.status === "error" ? "block" : "none";
+        liveNotice.setAttribute("role", "status");
+        liveNotice.innerHTML = analysisInProgress
+          ? '<span class="scan-spinner" aria-hidden="true"></span>Checking Gemini, OpenAI and Claude. Scores will appear automatically; you can keep this page open.'
+          : runDoc.status === "error"
+            ? "Scan stopped. Completed results remain available; some checks could not finish."
+            : "";
 
         const tbody = document.getElementById("resultsTableBody");
         tbody.innerHTML = "";
@@ -1029,9 +1037,10 @@
           const testedCount = Array.isArray(b.ai?.queries)
             ? b.ai.queries.filter((query) => query?.status === "tested").length
             : 0;
-          const visibilityLabel = completeEvidence
-            ? `${b.ai.visibility}%`
-            : testedCount > 0 ? `${testedCount}/10 tested` : "Not measured";
+          const visibilityLabel = [["gemini", "Gemini"], ["openai", "OpenAI"], ["anthropic", "Claude"]].map(([id, label]) => {
+            const p = id === "gemini" ? { total: testedCount, mentions: (b.ai?.queries || []).filter(q => q.status === "tested" && q.mentioned).length } : b.ai?.providers?.[id];
+            return `<small style="display:block;white-space:nowrap">${label}: ${p?.total > 0 ? `${Math.round(100 * p.mentions / p.total)}% (${p.mentions}/${p.total})` : analysisInProgress ? '<span class="scan-spinner" aria-hidden="true"></span>Checking…' : "Unavailable"}</small>`;
+          }).join("");
 
           tr.innerHTML = `
             <td>
@@ -1041,10 +1050,10 @@
             <td style="text-align: right;">${b.rating || 0}★ <span style="color: var(--faint); font-size: 13px;">(${b.review_count || 0})</span></td>
             <td style="text-align: right; color: var(--pos); font-weight: 600;">${b.quality?.score || 0}</td>
             <td style="text-align: right; color: ${scoredEvidence && b.ai?.visibility < 40 ? 'var(--neg)' : 'var(--faint)'}; font-weight: 600;">${visibilityLabel}</td>
-            <td class="goldcell">${scoredEvidence ? `${b.gold_score}${completeEvidence ? '' : `<small style="display:block; font-size:10px; color:var(--faint);">${b.score_status === 'indicative' ? 'EARLY SIGNAL' : 'PROVISIONAL'}</small>`}` : 'N/A'}</td>
+            <td class="goldcell">${scoredEvidence ? `${b.gold_score}${completeEvidence ? '' : `<small style="display:block; font-size:10px; color:var(--faint);">${b.score_status === 'indicative' ? 'EARLY SIGNAL' : 'PROVISIONAL'}</small>`}` : analysisInProgress ? '<small><span class="scan-spinner" aria-hidden="true"></span>Calculating…</small>' : 'N/A'}</td>
           `;
 
-          if (scoredEvidence) {
+          if (b.place_id) {
             tr.addEventListener("click", () => {
               currentBusiness = b;
               renderDetailView(b, runDoc);
@@ -1103,13 +1112,14 @@
         } else if (visibility === 0) {
           verdictText += "Customers already rate them highly, yet they were not named in the completed AI searches. That mismatch is why this is a Goldmine opportunity.";
         } else if (visibility >= 70) {
-          verdictText += `They were visible in ${visibility}% of the completed AI customer searches. AI is already finding this business reliably, so this is not a Goldmine AI-discoverability prospect.`;
+          verdictText += `They were visible in ${visibility}% of the completed AI customer searches. Strong measured visibility, with further improvement still possible. Your agency decides whether to reach out.`;
         } else if (visibility >= 40) {
-          verdictText += `They were visible in ${visibility}% of the completed AI customer searches. Their AI discoverability is established; this is a weaker opportunity than businesses AI rarely names.`;
+          verdictText += `They were visible in ${visibility}% of the completed AI customer searches. There is room to improve AI mentions. Consider an outreach conversation and review their SEO before recommending changes.`;
         } else {
           verdictText += `They were visible in ${visibility}% of the completed AI customer searches. ${scoredEvidence ? "Strong customer proof paired with weaker AI visibility is the Goldmine: a credible business with room to be found." : "More AI evidence is needed before Goldmine can score the opportunity."}`;
         }
         if (scoredEvidence && !fullEvidence) verdictText += ` This is a provisional Gold score based on ${totalTested} of 10 completed tests.`;
+        verdictText += " Gold is an opportunity score: higher means more potential, not better visibility. Scores guide your agency; they never exclude a business from outreach.";
         document.getElementById("detailVerdict").textContent = verdictText;
 
         // Top Card Numbers (Count-up)
@@ -1125,10 +1135,12 @@
         if (totalTested === 0) {
           document.getElementById("detailAiVisNote").textContent = "AI visibility not measured for this business";
         } else {
-          document.getElementById("detailAiVisNote").textContent = `named in ${mentions} of ${totalTested} completed searches${fullEvidence ? "" : " · provisional evidence"}`;
+          document.getElementById("detailAiVisNote").textContent = `Gemini: named in ${mentions} of ${totalTested} completed searches`;
         }
+        const providerNote = document.getElementById("detailAiVisNote");
+        if (b.ai?.providers) providerNote.textContent = [["gemini", "Gemini"], ["openai", "OpenAI"], ["anthropic", "Claude"]].map(([id, label]) => { const p = id === "gemini" ? {total: totalTested, mentions, visibility} : b.ai.providers[id]; return p?.total > 0 ? `${label}: ${p.mentions}/${p.total} prompts (${p.visibility}%)` : `${label}: unavailable`; }).join(" · ");
 
-        document.getElementById("detailRecService").textContent = !aiMeasured ? (b.recommended_service || "Evidence still loading") : visibility >= 70 ? "No AI visibility opportunity identified" : (b.recommended_service || "SEO, websites and AI visibility");
+        document.getElementById("detailRecService").textContent = !aiMeasured ? (b.recommended_service || "Evidence still loading") : visibility >= 70 ? "Maintain and improve AI visibility" : (b.recommended_service || "SEO, websites and AI visibility");
 
         // 1. TOP CUSTOMER REVIEW
         const topRevSection = document.getElementById("topReviewSection");
@@ -1222,7 +1234,7 @@
             techFindingsEl.appendChild(fRow);
           });
         } else {
-          techFindingsEl.innerHTML = `<div style="font-size: 14px; color: var(--muted); padding: 8px 0;">Performance: ${b.site?.performance || 0}/100 · SEO: ${b.site?.seo || 0}/100</div>`;
+          techFindingsEl.innerHTML = `<div style="font-size: 14px; color: var(--muted); padding: 8px 0;">${b.site?.audited ? `Performance: ${b.site.performance}/100 · SEO: ${b.site.seo}/100` : "Website audit not yet performed. SEO and performance have not been measured."}</div>`;
         }
 
         // 3. WHO AI IS RECOMMENDING
@@ -1263,15 +1275,8 @@
         // Reset Outreach UI
         document.getElementById("outreachPanel").style.display = "none";
         const outreachButton = document.getElementById("btnSendOutreach");
-        const outreachEligible = fullEvidence && visibility < 40;
-        outreachButton.disabled = !outreachEligible;
-        outreachButton.textContent = !aiMeasured
-          ? "AI VISIBILITY MUST BE MEASURED BEFORE OUTREACH"
-          : !fullEvidence
-            ? "TEN COMPLETED TESTS REQUIRED FOR OUTREACH"
-            : visibility >= 40
-              ? "NOT AN AI-VISIBILITY OUTREACH PROSPECT"
-              : "SEND THIS PROSPECT AN EMAIL";
+        outreachButton.disabled = false;
+        outreachButton.textContent = "CREATE OUTREACH DRAFT";
       }
 
       // -----------------------------------------------------------
@@ -1310,10 +1315,6 @@
       // -----------------------------------------------------------
       document.getElementById("btnSendOutreach").addEventListener("click", async () => {
         if (!currentBusiness) return;
-        if (!hasCompleteAiVisibility(currentBusiness)) {
-          alert("Outreach is available after all ten AI visibility queries complete.");
-          return;
-        }
         const btn = document.getElementById("btnSendOutreach");
         const progress = document.getElementById("outreachProgress");
         btn.textContent = "WRITING YOUR OUTREACH EMAIL...";
@@ -1328,7 +1329,7 @@
           const resp = await fetch(`/api/outreach/${currentBusiness.place_id}`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ services: currentBusiness.recommended_service }),
+            body: JSON.stringify({ services: currentBusiness.recommended_service, run_id: currentRunId }),
           });
 
           if (!resp.ok) {
@@ -1351,6 +1352,7 @@
             sourceEl.textContent = "No published email address was found on their website.";
           }
 
+          if (data.evidence_note) sourceEl.textContent += ` ${data.evidence_note}`;
           const subject = data.subject || `AI visibility audit for ${currentBusiness.name}`;
           const bodyText = data.body || data.outreach;
 
