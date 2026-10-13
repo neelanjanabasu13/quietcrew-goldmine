@@ -30,8 +30,8 @@ const MAX_AUDIT_CANDIDATES = Math.max(30, Math.min(50, Number(process.env.MAX_AN
 // "independent business" flag, so each candidate still needs a real check.
 const MAX_BRAND_VERIFICATION_CANDIDATES = 25;
 const GROUNDING_QUERY_CONCURRENCY = Math.max(1, Math.min(10, Number(process.env.GROUNDING_QUERY_CONCURRENCY || 10)));
-const GROUNDING_QUERY_TIMEOUT_MS = Math.max(1_000, Number(process.env.GROUNDING_QUERY_TIMEOUT_MS || 18_000));
-const VISIBILITY_STAGE_TIMEOUT_MS = Math.max(1_000, Number(process.env.VISIBILITY_STAGE_TIMEOUT_MS || 55_000));
+const GROUNDING_QUERY_TIMEOUT_MS = Math.max(1_000, Number(process.env.GROUNDING_QUERY_TIMEOUT_MS || 45_000));
+const VISIBILITY_STAGE_TIMEOUT_MS = Math.max(1_000, Number(process.env.VISIBILITY_STAGE_TIMEOUT_MS || 180_000));
 const PLACES_REQUEST_TIMEOUT_MS = Math.max(1_000, Number(process.env.PLACES_REQUEST_TIMEOUT_MS || 8_000));
 // Follow available pages from each discovery lens; the HTTP request returns
 // before discovery begins and clients poll for progress.
