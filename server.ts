@@ -64,6 +64,7 @@ type VisibilityProvider = "gemini" | "openai" | "anthropic";
 const openaiLimiter = createRequestLimiter(3, 250);
 const anthropicLimiter = createRequestLimiter(3, 250);
 const geminiLimiter = createRequestLimiter(GROUNDING_QUERY_CONCURRENCY, 100);
+const placesDetailsLimiter = createRequestLimiter(5, 100);
 
 async function callOpenAIVisibility(prompt: string): Promise<string> {
   const key = process.env.OPENAI_API_KEY;
@@ -1319,6 +1320,23 @@ function normalizePlace(p: any, category: string, location: string) {
   };
 }
 
+async function enrichPlacesEvidence(business: any): Promise<void> {
+  try {
+    const details: any = await fetchWithRetry(
+      `https://places.googleapis.com/v1/places/${encodeURIComponent(business.place_id)}`,
+      { headers: { "X-Goog-Api-Key": process.env.MAPS_API_KEY || "",
+        "X-Goog-FieldMask": "reviews,websiteUri" } },
+      placesDetailsLimiter, PLACES_REQUEST_TIMEOUT_MS
+    );
+    business.top_review = extractTopReview(details.reviews) || business.top_review;
+    business.website = details.websiteUri || business.website;
+    business.review_evidence_status = business.top_review ? "available" : "not_returned";
+  } catch (error) {
+    business.review_evidence_status = "unavailable";
+    console.warn(`Places details unavailable for ${business.place_id}:`, (error as Error).message);
+  }
+}
+
 const GENERIC_WEBSITE_DOMAINS = new Set([
   "opentable.com", "resy.com", "tripadvisor.com", "facebook.com", "instagram.com",
   "deliveroo.co.uk", "ubereats.com", "justeat.co.uk", "booking.com",
@@ -2047,6 +2065,9 @@ async function runDiscoveryPipeline(
     // until that deferred check completes.
     const rankedForVerification: any[] = selectAnalysisCohort(qualified, MAX_AUDIT_CANDIDATES);
     const top20 = rankedForVerification;
+    // Text Search can omit review text even when ratings are returned. Fetch
+    // selected-business details explicitly before publishing their evidence.
+    await runWithConcurrency(top20, 5, enrichPlacesEvidence);
     // Count only the deterministic pre-screen exclusions. The following
     // pending state is not an exclusion: it is a deliberate safety lock until
     // selected-business verification has run.
