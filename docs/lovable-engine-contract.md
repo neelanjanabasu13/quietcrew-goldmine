@@ -43,3 +43,18 @@ Quietcrew must authenticate its customer and map paid order -> run_id. Verify ow
 Engine jobs currently execute in-process after the HTTP response. Production needs persistent storage and reliable execution/recovery; do not deploy as a short-lived request-only function and assume jobs survive. Current OpenAI/Claude checks do not use web search. Overall AI and Gold scores currently depend on Gemini, not a blended three-provider score. Label these limitations honestly or resolve them before release.
 
 Next handoff must replace the pending URL/auth entries, include deployed request/response examples and record a real authenticated scan plus ownership/failure tests. No live endpoint has been verified by this document.
+
+## Engine expansion — 13 October 2026 (local changes, not yet deployed)
+
+- The default analysis cap is now 50 qualified businesses; MAX_ANALYSIS_CANDIDATES can set it between 30 and 50. This is an upper limit, not a guaranteed result count. The existing minimum of 20 reviews and chain exclusions are unchanged; ratings are ranked rather than filtered by an absolute minimum.
+- Discovery follows up to three pages for each of the three existing search variants, deduplicating by Google Place ID. PLACES_MAX_PAGES can override pagination. candidates_found counts unique places, not duplicate search hits.
+- POST /api/run still returns HTTP 200 and run_id, now with status, results and discovery. It returns immediately; discovery counts are null until known. Poll GET /api/run/:runId.
+- Both responses include discovery.candidates_found, discovery.candidates_qualified, discovery.query_variants and discovery.analysis_cap. Existing candidates_returned, qualified_candidates and analysis_candidates are retained.
+- Results expose website (string or null), top_review ({text, rating, author, relative_time} or null), queries, and competitors (unique names from tested provider answers). The old comparison objects are available as competitor_comparisons.
+- queries aliases the detailed ai.queries evidence, adding recommended_competitors and provider-specific evidence under providers.gemini/openai/anthropic. Top-level query status and mentioned describe Gemini; read each provider separately for three-provider display. Top-level mentioned is null when pending/failed. An empty recommendation list is distinct from a failed response.
+- Provider answers include tested_at and competitor names; competitor mentions are model recommendations, not independently verified Google listings. Missing reviews and websites remain null.
+- Requests share bounded provider queues across runs. OpenAI/Anthropic have request deadlines and bounded retry/backoff for throttling and transient HTTP errors; malformed answers become failed checks. Successful query evidence is saved progressively.
+- Repeated answer text is stored once per run in Firestore and restored before API responses, avoiding answer duplication as the cohort grows. Writes are ordered per run so an older progress write cannot overwrite a final result.
+- Background jobs still run inside the server process. Polling avoids long HTTP requests, but restart-safe durable job execution remains a separate deployment requirement.
+
+Validation: production build, TypeScript check, and focused cohort/evidence/concurrency/retry/timeout tests. No live scan or deployment is implied by these checks.

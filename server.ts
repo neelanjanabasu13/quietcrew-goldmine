@@ -1,3 +1,4 @@
+import { selectAnalysisCohort, serializeRun, serializeBusiness, compactRunEvidence, expandRunEvidence, createRequestLimiter, fetchWithRetry } from "./scan-contract.mjs";
 import { engineAuth } from "./engine-auth.mjs";
 import { partialOutreach } from "./partial-outreach.mjs";
 import express, { Request, Response } from "express";
@@ -22,8 +23,8 @@ const MODEL = process.env.GEMINI_MODEL || "gemini-3.7-flash";
 const FALLBACK_MODELS = [MODEL, "gemini-3.7-flash", "gemini-3.1-flash-lite", "gemini-flash-latest"];
 const CUSTOMER_QUERY_COUNT = 10;
 const QUERY_SET_VERSION = 3;
-const MAX_AUDIT_CANDIDATES = 10;
-// We inspect more than the ten businesses that receive a full audit so that a
+const MAX_AUDIT_CANDIDATES = Math.max(30, Math.min(50, Number(process.env.MAX_ANALYSIS_CANDIDATES) || 50));
+// Brand verification remains separate from the larger analysis cohort so a
 // chain exclusion does not leave a local market with an artificially tiny
 // prospect set. This is deliberately bounded: Places has no first-party
 // "independent business" flag, so each candidate still needs a real check.
@@ -32,10 +33,9 @@ const GROUNDING_QUERY_CONCURRENCY = Math.max(1, Math.min(10, Number(process.env.
 const GROUNDING_QUERY_TIMEOUT_MS = Math.max(1_000, Number(process.env.GROUNDING_QUERY_TIMEOUT_MS || 18_000));
 const VISIBILITY_STAGE_TIMEOUT_MS = Math.max(1_000, Number(process.env.VISIBILITY_STAGE_TIMEOUT_MS || 55_000));
 const PLACES_REQUEST_TIMEOUT_MS = Math.max(1_000, Number(process.env.PLACES_REQUEST_TIMEOUT_MS || 8_000));
-// Interactive scans use the first page from each independent discovery lens.
-// Pulling later pages is a coverage/indexing task, not something a person
-// should wait for before seeing an answer.
-const PLACES_MAX_PAGES = Math.max(1, Math.min(3, Number(process.env.PLACES_MAX_PAGES || 1)));
+// Follow available pages from each discovery lens; the HTTP request returns
+// before discovery begins and clients poll for progress.
+const PLACES_MAX_PAGES = Math.max(1, Math.min(3, Number(process.env.PLACES_MAX_PAGES) || 3));
 const DISCOVERY_QUERY_VARIANTS = 3;
 
 function hasMeasuredAiVisibility(business: any): boolean {
@@ -61,28 +61,31 @@ const firestore = firestoreProject && process.env.USE_FIRESTORE === "true"
 
 type VisibilityProvider = "gemini" | "openai" | "anthropic";
 
+const openaiLimiter = createRequestLimiter(3, 250);
+const anthropicLimiter = createRequestLimiter(3, 250);
+const geminiLimiter = createRequestLimiter(GROUNDING_QUERY_CONCURRENCY, 100);
+
 async function callOpenAIVisibility(prompt: string): Promise<string> {
   const key = process.env.OPENAI_API_KEY;
   if (!key) throw new Error("OPENAI_API_KEY is not configured");
-  const response = await fetch("https://api.openai.com/v1/chat/completions", { method: "POST", headers: { "Content-Type": "application/json", Authorization: `Bearer ${key}` }, body: JSON.stringify({ model: process.env.OPENAI_MODEL || "gpt-4o-mini", temperature: 0, messages: [{ role: "user", content: prompt }] }) });
-  if (!response.ok) throw new Error(`OpenAI returned HTTP ${response.status}`);
-  const data: any = await response.json(); return String(data.choices?.[0]?.message?.content || "");
+  const data: any = await fetchWithRetry("https://api.openai.com/v1/chat/completions", { method: "POST", headers: { "Content-Type": "application/json", Authorization: `Bearer ${key}` }, body: JSON.stringify({ model: process.env.OPENAI_MODEL || "gpt-4o-mini", temperature: 0, messages: [{ role: "user", content: prompt }] }) }, openaiLimiter);
+  return String(data.choices?.[0]?.message?.content || "");
 }
 
 async function callAnthropicVisibility(prompt: string): Promise<string> {
   const key = process.env.ANTHROPIC_API_KEY;
   if (!key) throw new Error("ANTHROPIC_API_KEY is not configured");
-  const response = await fetch("https://api.anthropic.com/v1/messages", { method: "POST", headers: { "Content-Type": "application/json", "x-api-key": key, "anthropic-version": "2023-06-01" }, body: JSON.stringify({ model: process.env.ANTHROPIC_MODEL || "claude-haiku-4-5", max_tokens: 700, temperature: 0, messages: [{ role: "user", content: prompt }] }) });
-  if (!response.ok) throw new Error(`Anthropic returned HTTP ${response.status}`);
-  const data: any = await response.json(); return String(data.content?.[0]?.text || "");
+  const data: any = await fetchWithRetry("https://api.anthropic.com/v1/messages", { method: "POST", headers: { "Content-Type": "application/json", "x-api-key": key, "anthropic-version": "2023-06-01" }, body: JSON.stringify({ model: process.env.ANTHROPIC_MODEL || "claude-haiku-4-5", max_tokens: 700, temperature: 0, messages: [{ role: "user", content: prompt }] }) }, anthropicLimiter);
+  return String(data.content?.[0]?.text || "");
 }
 
 function parseProviderAnswer(text: string, query: string): GroundedQueryResult {
   try {
     const parsed = JSON.parse(text.replace(/^```json\s*/i, "").replace(/\s*```$/, ""));
+    if (!Array.isArray(parsed.businesses) && !Array.isArray(parsed.results)) throw new Error("Missing recommendation list");
     const businesses = Array.isArray(parsed.businesses) ? parsed.businesses : Array.isArray(parsed.results) ? parsed.results : [];
     return { query, answer_text: String(parsed.answer_text || parsed.answer || text).slice(0, 4000), named_list: businesses.map((b: any, i: number) => ({ name: String(b.name || ""), rank: Number(b.rank || i + 1) })).filter((b: any) => b.name), tested_at: new Date().toISOString() };
-  } catch { return { query, answer_text: text.slice(0, 4000), named_list: [], tested_at: new Date().toISOString() }; }
+  } catch { throw new Error("Provider returned an unusable recommendation response"); }
 }
 
 // Gemini client initialization
@@ -148,6 +151,7 @@ async function callGeminiWithRetry(
         return resp;
       } catch (err: any) {
         lastError = err;
+        if (params.config?.abortSignal?.aborted) throw err;
         const errMsg = String(err?.message || "");
         const status = err?.status;
         const isNotFoundOrDenied =
@@ -347,10 +351,13 @@ async function useFirestore<T>(work: () => Promise<T>): Promise<T | null> {
   }
 }
 
+const runPersistence = new Map<string, Promise<void>>();
+
 async function dbSaveRun(runId: string, data: Record<string, any>, waitForPersistence = false) {
   store.runs[runId] = { ...(store.runs[runId] || {}), ...data };
+  const persistedData = compactRunEvidence(data);
   const persist = async () => {
-    const persisted = await useFirestore(() => firestore!.collection("runs").doc(runId).set(data, { merge: true }));
+    const persisted = await useFirestore(() => firestore!.collection("runs").doc(runId).set(persistedData, { merge: true }));
     if (persisted === null) saveLocalStore();
   };
 
@@ -358,11 +365,11 @@ async function dbSaveRun(runId: string, data: Record<string, any>, waitForPersis
   // state. Waiting for Firestore after every agent transition was adding about
   // twenty seconds to an otherwise completed interactive scan. Final/error
   // records and initial creation opt into a durable wait explicitly.
-  if (waitForPersistence) {
-    await persist();
-  } else {
-    void persist();
-  }
+  const previous = runPersistence.get(runId) || Promise.resolve();
+  const pending = previous.catch(() => {}).then(persist);
+  runPersistence.set(runId, pending);
+  void pending.finally(() => { if (runPersistence.get(runId) === pending) runPersistence.delete(runId); }).catch((error) => console.warn("Run persistence failed:", error));
+  if (waitForPersistence) await pending;
 }
 
 async function dbGetRun(runId: string) {
@@ -370,7 +377,7 @@ async function dbGetRun(runId: string) {
   const snapshot = await useFirestore(() => firestore!.collection("runs").doc(runId).get());
   if (!snapshot) return null;
   if (!snapshot.exists) return null;
-  const data = snapshot.data() || {};
+  const data = expandRunEvidence(snapshot.data() || {});
   store.runs[runId] = data;
   return data;
 }
@@ -388,7 +395,7 @@ async function dbListRuns(): Promise<any[]> {
   }
   const snapshot = await useFirestore(() => firestore!.collection("runs").get());
   if (!snapshot) return Object.values(store.runs);
-  const runs = snapshot.docs.map((doc) => doc.data());
+  const runs = snapshot.docs.map((doc) => expandRunEvidence(doc.data()));
   for (const run of runs) {
     if (run.run_id) store.runs[run.run_id] = run;
   }
@@ -400,7 +407,7 @@ async function dbListBusinesses(): Promise<any[]> {
   if (!firestore || !firestoreAvailable) return Object.values(store.businesses);
   const snapshot = await useFirestore(() => firestore!.collection("businesses").get());
   if (!snapshot) return Object.values(store.businesses);
-  const businesses = snapshot.docs.map((doc) => doc.data());
+  const businesses = snapshot.docs.map((doc) => expandRunEvidence(doc.data()));
   for (const business of businesses) {
     if (business.place_id) store.businesses[business.place_id] = business;
   }
@@ -580,7 +587,7 @@ function extractTopReview(reviews: any[]): { text: string; rating: number; autho
   if (!rawText && !author) return null;
 
   return {
-    text: truncateAtWordBoundary(rawText, 240),
+    text: rawText,
     rating,
     author,
     relative_time: relativeTime,
@@ -977,6 +984,7 @@ async function dbSaveQuerySet(category: string, locality: string, queries: strin
 }
 
 type GroundedQueryResult = {
+  query?: string;
   answer_text: string;
   named_list: Array<{ name: string; rank: number }>;
   tested_at: string;
@@ -1204,6 +1212,7 @@ async function fetchPlacesTextQuery(query: string, maxPages = PLACES_MAX_PAGES):
       clearTimeout(timeout);
 
       if (!resp.ok) {
+        if (pageIdx === 0) throw new Error(`Places discovery returned HTTP ${resp.status}`);
         console.warn(`Places API returned status ${resp.status} on page ${pageIdx}`);
         break;
       }
@@ -1224,6 +1233,7 @@ async function fetchPlacesTextQuery(query: string, maxPages = PLACES_MAX_PAGES):
       if (!pageToken) break;
     } catch (err) {
       console.warn(`Error fetching places page ${pageIdx} (capped at ${PLACES_REQUEST_TIMEOUT_MS}ms):`, err);
+      if (pageIdx === 0) throw err;
       break;
     }
   }
@@ -2013,6 +2023,7 @@ async function runDiscoveryPipeline(
     await dbSaveRun(runId, {
       status: "running",
       stage: "qualifying",
+      discovery: { source: "Google Places Text Search", query_variants: discoveryResponse.queries, query_variants_completed: discoveryResponse.completedQueries, candidates_returned: candidatesCount, scope: location, market_coverage: "candidate_cohort_not_market_census" },
       stage_status: {
         discovering: "done",
         qualifying: "running",
@@ -2034,9 +2045,7 @@ async function runDiscoveryPipeline(
     // minutes; that belongs to the selected-business evidence job, not the
     // interactive market scan. Candidates are explicitly not outreach-eligible
     // until that deferred check completes.
-    const rankedForVerification = qualified
-      .filter((business) => business.discovery?.outreach_eligible !== false)
-      .slice(0, MAX_AUDIT_CANDIDATES);
+    const rankedForVerification: any[] = selectAnalysisCohort(qualified, MAX_AUDIT_CANDIDATES);
     const top20 = rankedForVerification;
     // Count only the deterministic pre-screen exclusions. The following
     // pending state is not an exclusion: it is a deliberate safety lock until
@@ -2343,7 +2352,7 @@ async function runDiscoveryPipeline(
       ) => {
         for (const business of groupBusinesses) {
           const entry = business.ai.queries[qIdx];
-          if (entry) Object.assign(entry, { status: "tested", mentioned: false, rank: null, answer_text: result.answer_text, verbatim_answer: result.answer_text });
+          if (entry && entry.status === "pending") Object.assign(entry, { status: "tested", mentioned: false, rank: null, answer_text: result.answer_text, verbatim_answer: result.answer_text, tested_at: result.tested_at, recommended_competitors: result.named_list.filter((named) => calculateTokenOverlap(new Set(normalizeName(named.name).split(" ").filter(Boolean)), new Set(normalizeName(business.name).split(" ").filter(Boolean))) < 0.65).map((named) => named.name) });
         }
         for (const named of result.named_list) {
           const rawName = String(named.name || "").trim();
@@ -2359,7 +2368,7 @@ async function runDiscoveryPipeline(
             }
           }
           if (bestMatch) {
-            Object.assign(bestMatch.ai.queries[qIdx], { mentioned: true, rank: named.rank || 1 });
+            if (bestMatch.ai.queries[qIdx].status === "tested") Object.assign(bestMatch.ai.queries[qIdx], { mentioned: true, rank: named.rank || 1 });
           } else {
             unmatchedMap[rawName] = (unmatchedMap[rawName] || 0) + 1;
           }
@@ -2390,8 +2399,12 @@ async function runDiscoveryPipeline(
             await runWithConcurrency(uncached, Math.min(10, GROUNDING_QUERY_CONCURRENCY), async ({ query, qIdx }) => {
               const searchPrompt = `Act as an AI local recommendation assistant in ${loc}. Use Google Search grounding to answer this one customer query. Return JSON only in this exact shape: {"results":[{"query":"${query.replace(/"/g, '\\"')}","answer_text":"the recommendation response","businesses":[{"name":"business name","rank":1}]}]}. Preserve the exact query and list up to five recommended businesses in rank order.\n\nCustomer query: ${query}`;
               try {
+                const signal = AbortSignal.timeout(GROUNDING_QUERY_TIMEOUT_MS);
                 const response = await withTimeout(
-                  callGeminiWithRetry(ai, { model: MODEL, contents: searchPrompt, config: { tools: [{ googleSearch: {} }] } }, 1, 1500),
+                  geminiLimiter(() => {
+                    signal.throwIfAborted();
+                    return callGeminiWithRetry(ai, { model: MODEL, contents: searchPrompt, config: { tools: [{ googleSearch: {} }], abortSignal: signal } }, 2, 1500);
+                  }),
                   GROUNDING_QUERY_TIMEOUT_MS,
                   `Grounded query for ${loc}`
                 );
@@ -2404,6 +2417,7 @@ async function runDiscoveryPipeline(
                 const result: GroundedQueryResult = { ...parsedResult, tested_at: new Date().toISOString() };
                 await saveGroundedQuery(category, loc, query, result);
                 applyGroundedResult(groupBusinesses, groupNormalized, qIdx, result);
+                await dbSaveRun(runId, { results: top20 });
               } catch (err) {
                 console.warn(`Gemini Search Grounding failed for query in ${loc}:`, err);
                 markFailed(groupBusinesses, qIdx, String((err as any)?.message || "AI response was unavailable for this query."));
@@ -2428,17 +2442,17 @@ async function runDiscoveryPipeline(
       await runWithConcurrency(groups, 1, async ({ groupBusinesses, groupNormalized, localityQueries }) => {
         await runWithConcurrency(localityQueries.map((query, qIdx) => ({ query, qIdx })), 3, async ({ query, qIdx }) => {
           const entryResults = await Promise.allSettled([
-            callOpenAIVisibility(providerPrompt(query)),
-            callAnthropicVisibility(providerPrompt(query)),
+            callOpenAIVisibility(providerPrompt(query)).then((answer) => parseProviderAnswer(answer, query)),
+            callAnthropicVisibility(providerPrompt(query)).then((answer) => parseProviderAnswer(answer, query)),
           ]);
           const names = ["openai", "anthropic"] as const;
           entryResults.forEach((result, index) => {
             const provider = names[index];
             const providerResult = groupBusinesses.map((business) => business.ai.queries[qIdx]);
             if (result.status === "fulfilled") {
-              const parsed = parseProviderAnswer(result.value, query);
+              const parsed = result.value;
               const providerNames = parsed.named_list.map((item) => item.name);
-              for (const entry of providerResult) entry.providers[provider] = { status: "tested", mentioned: false, answer_text: parsed.answer_text };
+              groupBusinesses.forEach((business, i) => { providerResult[i].providers[provider] = { status: "tested", mentioned: false, answer_text: parsed.answer_text, tested_at: parsed.tested_at, recommended_competitors: providerNames.filter((name) => calculateTokenOverlap(new Set(normalizeName(name).split(" ").filter(Boolean)), new Set(normalizeName(business.name).split(" ").filter(Boolean))) < 0.65) }; });
               for (const named of providerNames) {
                 const tokens = new Set(normalizeName(named).split(" ").filter(Boolean));
                 const match = groupNormalized.find((candidate) => calculateTokenOverlap(tokens, candidate.tokens) >= 0.65);
@@ -2449,6 +2463,7 @@ async function runDiscoveryPipeline(
               for (const entry of providerResult) entry.providers[provider] = { status: "failed", failure_reason: String(result.reason?.message || result.reason || "Provider unavailable") };
             }
           });
+          await dbSaveRun(runId, { results: top20 });
         });
       });
 
@@ -2465,7 +2480,7 @@ async function runDiscoveryPipeline(
         b.ai.untested = failedQueries.length;
         b.ai.visibility = visibility;
         for (const q of b.ai.queries) {
-          q.providers.gemini = { status: q.status, mentioned: q.mentioned, rank: q.rank, answer_text: q.answer_text, failure_reason: q.failure_reason || null };
+          q.providers.gemini = { status: q.status, mentioned: q.mentioned, rank: q.rank, answer_text: q.answer_text, failure_reason: q.failure_reason || null, recommended_competitors: q.recommended_competitors || [], tested_at: q.tested_at || null };
         }
         for (const provider of ["gemini", "openai", "anthropic"] as const) {
           const tested = (b.ai.queries || []).filter((q: any) => q.providers?.[provider]?.status === "tested");
@@ -2775,7 +2790,7 @@ const handleRunCreation = async (req: Request, res: Response) => {
     runDiscoveryPipeline(runId, category, location, services, options);
   });
 
-  res.json({ run_id: runId });
+  res.json(serializeRun(runDoc, MAX_AUDIT_CANDIDATES));
 };
 
 app.post("/api/run", handleRunCreation);
@@ -2811,8 +2826,7 @@ app.get("/api/run/:runId", async (req: Request, res: Response) => {
   }));
 
   res.json({
-    ...runData,
-    results,
+    ...serializeRun({ ...runData, results }, MAX_AUDIT_CANDIDATES),
     elapsed_sec: runData.status === "complete" ? (runData.total_duration_sec || elapsedSec) : elapsedSec,
     estimated_total_sec: estimates.estimated_total_sec,
     stage_estimates_sec: estimates.stages,
@@ -2827,7 +2841,7 @@ app.get("/api/business/:placeId", async (req: Request, res: Response) => {
     return;
   }
 
-  res.json(business);
+  res.json(serializeBusiness(business));
 });
 
 app.post("/api/outreach/:placeId", async (req: Request, res: Response) => {
