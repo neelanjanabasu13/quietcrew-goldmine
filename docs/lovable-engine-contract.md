@@ -1,11 +1,11 @@
 # Goldmine engine contract — implementation reference
 
-Status: NOT DEPLOYED. This document describes the current local code, not a ready production service. Hosted URL and server authentication must be supplied before integration. Do not call localhost from Lovable. Do not enable purchases based on this document alone.
+Status: Railway engine deployed at https://quietcrew-goldmine-production.up.railway.app. The existing bearer token is unchanged. The 13 October engine expansion has been tested against a real Highgate scan; see docs/live-verification for the saved response and remaining limitations. Do not call localhost from Lovable.
 
 ## Required deployment values
 
-- GOLDMINE_ENGINE_URL: pending verified deployment (HTTPS).
-- GOLDMINE_ENGINE_TOKEN: implemented as Authorization: Bearer <token> on every /api route; secure production provisioning remains pending. Production refuses to start without a token of at least 32 characters.
+- GOLDMINE_ENGINE_URL: https://quietcrew-goldmine-production.up.railway.app (existing address).
+- GOLDMINE_ENGINE_TOKEN: implemented as Authorization: Bearer <token> on every /api route; existing production provisioning is retained. Production refuses to start without a token of at least 32 characters. The existing Railway token remains configured; keep it server-side.
 
 ## Current endpoint shapes
 
@@ -42,9 +42,9 @@ Quietcrew must authenticate its customer and map paid order -> run_id. Verify ow
 
 Engine jobs currently execute in-process after the HTTP response. Production needs persistent storage and reliable execution/recovery; do not deploy as a short-lived request-only function and assume jobs survive. Current OpenAI/Claude checks do not use web search. Overall AI and Gold scores currently depend on Gemini, not a blended three-provider score. Label these limitations honestly or resolve them before release.
 
-Next handoff must replace the pending URL/auth entries, include deployed request/response examples and record a real authenticated scan plus ownership/failure tests. No live endpoint has been verified by this document.
+The live-verification handoff records deployed scan evidence. Customer/order ownership and purchase-flow checks remain separate release work.
 
-## Engine expansion — 13 October 2026 (local changes, not yet deployed)
+## Engine expansion — 13 October 2026
 
 - The default analysis cap is now 50 qualified businesses; MAX_ANALYSIS_CANDIDATES can set it between 30 and 50. This is an upper limit, not a guaranteed result count. The existing minimum of 20 reviews and chain exclusions are unchanged; ratings are ranked rather than filtered by an absolute minimum.
 - Discovery follows up to three pages for each of the three existing search variants, deduplicating by Google Place ID. PLACES_MAX_PAGES can override pagination. candidates_found counts unique places, not duplicate search hits.
@@ -57,4 +57,6 @@ Next handoff must replace the pending URL/auth entries, include deployed request
 - Repeated answer text is stored once per run in Firestore and restored before API responses, avoiding answer duplication as the cohort grows. Writes are ordered per run so an older progress write cannot overwrite a final result.
 - Background jobs still run inside the server process. Polling avoids long HTTP requests, but restart-safe durable job execution remains a separate deployment requirement.
 
-Validation: production build, TypeScript check, and focused cohort/evidence/concurrency/retry/timeout tests. No live scan or deployment is implied by these checks.
+Validation: production build, TypeScript check, and focused cohort/evidence/concurrency/retry/timeout tests. A real Highgate scan has verified 50 results; see the live-verification handoff for provider completeness and evidence coverage.
+
+Selected businesses now receive explicit Google Places Details lookups for review text and website evidence; Text Search alone did not supply reviews in the first live test. review_evidence_status is available, not_returned or unavailable. Grounded-query requests allow 45 seconds and the background Gemini stage allows 180 seconds by default.

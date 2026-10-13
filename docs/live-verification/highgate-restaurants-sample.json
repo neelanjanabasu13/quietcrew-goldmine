@@ -1,0 +1,1517 @@
+{
+  "run_id": "run_4jc9ltbmwm9",
+  "status": "complete",
+  "location": "Highgate, London, UK",
+  "category": "Restaurants and cafés",
+  "started_at": "2026-10-13T15:10:18.774Z",
+  "finished_at": "2026-10-13T15:10:57.742Z",
+  "total_duration_sec": 38.96,
+  "discovery": {
+    "source": "Google Places Text Search",
+    "query": "Restaurants and cafés in Highgate, London, UK | local Restaurants and cafés in Highgate, London, UK | independent Restaurants and cafés in Highgate, London, UK",
+    "query_variants": [
+      "Restaurants and cafés in Highgate, London, UK",
+      "local Restaurants and cafés in Highgate, London, UK",
+      "independent Restaurants and cafés in Highgate, London, UK"
+    ],
+    "query_variants_completed": 3,
+    "candidates_returned": 52,
+    "qualified_candidates": 51,
+    "brand_verified_candidates": 0,
+    "analysis_candidates": 45,
+    "outreach_eligible_candidates": 0,
+    "excluded_multi_location_candidates": 6,
+    "scope": "Highgate, London, UK",
+    "market_coverage": "candidate_cohort_not_market_census",
+    "candidates_found": 52,
+    "candidates_qualified": 51,
+    "analysis_cap": 50
+  },
+  "sample_note": "Two results excerpted from the actual 45-business completed response; see highgate-restaurants-complete.json for the full run.",
+  "results": [
+    {
+      "place_id": "ChIJJ8C4cq4bdkgRSI_zxq2IE3k",
+      "name": "Crudough",
+      "address": "10 Navigator Square, Archway, London N19 3TD, UK",
+      "rating": 4.9,
+      "review_count": 1764,
+      "website": "https://crudough.com/",
+      "top_review": null,
+      "review_evidence_status": "not_returned",
+      "queries": [
+        {
+          "query": "best restaurants and cafés in Highgate, London, UK",
+          "status": "tested",
+          "mentioned": false,
+          "rank": null,
+          "answer_text": "Highgate offers an exceptional village dining scene combining historic British gastropubs, neighbourhood eateries, and cosy cafés. Leading the list is The Red Lion & Sun, an award-winning gastropub known for its daily-changing seasonal menu and expansive wine list. Close to Hampstead Heath, The Bull & Last delivers refined, Michelin-recognized British dining in a beautifully restored coaching inn. For quintessential village charm, The Flask provides classic pub fare in an 18th-century setting with cosy snugs and a courtyard. If you are in the mood for Italian comfort, Fabrizio Restaurant is a local favourite celebrated for authentic pizzas and homemade pastas. For brunch and speciality coffee, Archie's on Highgate Hill serves creative daytime dishes in a relaxed, friendly atmosphere.",
+          "verbatim_answer": "Highgate offers an exceptional village dining scene combining historic British gastropubs, neighbourhood eateries, and cosy cafés. Leading the list is The Red Lion & Sun, an award-winning gastropub known for its daily-changing seasonal menu and expansive wine list. Close to Hampstead Heath, The Bull & Last delivers refined, Michelin-recognized British dining in a beautifully restored coaching inn. For quintessential village charm, The Flask provides classic pub fare in an 18th-century setting with cosy snugs and a courtyard. If you are in the mood for Italian comfort, Fabrizio Restaurant is a local favourite celebrated for authentic pizzas and homemade pastas. For brunch and speciality coffee, Archie's on Highgate Hill serves creative daytime dishes in a relaxed, friendly atmosphere.",
+          "providers": {
+            "openai": {
+              "status": "tested",
+              "mentioned": false,
+              "answer_text": "Here are some of the best restaurants and cafés in Highgate, London, UK:",
+              "tested_at": "2026-10-13T15:10:51.665Z",
+              "recommended_competitors": [
+                "The Flask",
+                "Café Boulangerie",
+                "The Highgate Society Café",
+                "Lauderdale House",
+                "The Gatehouse"
+              ]
+            },
+            "anthropic": {
+              "status": "tested",
+              "mentioned": false,
+              "answer_text": "Highgate has several excellent restaurants and cafés offering diverse cuisines and atmospheres. Here are some of the best options in the area, ranging from casual cafés to fine dining establishments.",
+              "tested_at": "2026-10-13T15:10:51.258Z",
+              "recommended_competitors": [
+                "The Flask",
+                "Café Noto",
+                "The Woodman",
+                "Highgate Deli",
+                "Osteria Tufo"
+              ]
+            },
+            "gemini": {
+              "query": "best restaurants and cafés in Highgate, London, UK",
+              "status": "tested",
+              "mentioned": false,
+              "rank": null,
+              "answer_text": "Highgate offers an exceptional village dining scene combining historic British gastropubs, neighbourhood eateries, and cosy cafés. Leading the list is The Red Lion & Sun, an award-winning gastropub known for its daily-changing seasonal menu and expansive wine list. Close to Hampstead Heath, The Bull & Last delivers refined, Michelin-recognized British dining in a beautifully restored coaching inn. For quintessential village charm, The Flask provides classic pub fare in an 18th-century setting with cosy snugs and a courtyard. If you are in the mood for Italian comfort, Fabrizio Restaurant is a local favourite celebrated for authentic pizzas and homemade pastas. For brunch and speciality coffee, Archie's on Highgate Hill serves creative daytime dishes in a relaxed, friendly atmosphere.",
+              "verbatim_answer": "Highgate offers an exceptional village dining scene combining historic British gastropubs, neighbourhood eateries, and cosy cafés. Leading the list is The Red Lion & Sun, an award-winning gastropub known for its daily-changing seasonal menu and expansive wine list. Close to Hampstead Heath, The Bull & Last delivers refined, Michelin-recognized British dining in a beautifully restored coaching inn. For quintessential village charm, The Flask provides classic pub fare in an 18th-century setting with cosy snugs and a courtyard. If you are in the mood for Italian comfort, Fabrizio Restaurant is a local favourite celebrated for authentic pizzas and homemade pastas. For brunch and speciality coffee, Archie's on Highgate Hill serves creative daytime dishes in a relaxed, friendly atmosphere.",
+              "tested_at": "2026-10-13T15:10:39.594Z",
+              "recommended_competitors": [
+                "The Red Lion & Sun",
+                "The Bull & Last",
+                "The Flask",
+                "Fabrizio Restaurant",
+                "Archie's"
+              ],
+              "failure_reason": null
+            }
+          },
+          "tested_at": "2026-10-13T15:10:39.594Z",
+          "recommended_competitors": [
+            "The Flask",
+            "Café Boulangerie",
+            "The Highgate Society Café",
+            "Lauderdale House",
+            "The Gatehouse",
+            "Café Noto",
+            "The Woodman",
+            "Highgate Deli",
+            "Osteria Tufo",
+            "The Red Lion & Sun",
+            "The Bull & Last",
+            "Fabrizio Restaurant",
+            "Archie's"
+          ]
+        },
+        {
+          "query": "top rated restaurants and cafés near me in Highgate, London, UK",
+          "status": "tested",
+          "mentioned": false,
+          "rank": null,
+          "answer_text": "Highgate offers a charming village dining scene known for top-tier gastropubs, artisanal brunch spots, and woodland cafés. The Red Lion & Sun is an award-winning gastropub celebrated for its seasonal British dishes, fresh seafood, and extensive wine list. The Flask provides historic 18th-century charm with elevated pub dining and renowned Sunday roasts. For daytime coffee and brunch, Archie's on Highgate Hill is a local favourite for specialty coffee and creative breakfast fare, while Queen's Wood Café offers a tranquil, fairytale woodland retreat for organic bites and homemade cakes. The Bull rounds out the list with modern British bistro dining and craft beers right on North Hill.",
+          "verbatim_answer": "Highgate offers a charming village dining scene known for top-tier gastropubs, artisanal brunch spots, and woodland cafés. The Red Lion & Sun is an award-winning gastropub celebrated for its seasonal British dishes, fresh seafood, and extensive wine list. The Flask provides historic 18th-century charm with elevated pub dining and renowned Sunday roasts. For daytime coffee and brunch, Archie's on Highgate Hill is a local favourite for specialty coffee and creative breakfast fare, while Queen's Wood Café offers a tranquil, fairytale woodland retreat for organic bites and homemade cakes. The Bull rounds out the list with modern British bistro dining and craft beers right on North Hill.",
+          "providers": {
+            "openai": {
+              "status": "tested",
+              "mentioned": false,
+              "answer_text": "Here are some top-rated restaurants and cafés in Highgate, London, UK:",
+              "tested_at": "2026-10-13T15:10:52.177Z",
+              "recommended_competitors": [
+                "The Flask",
+                "Lauderdale House",
+                "The Highgate Society Café",
+                "Café Boulangerie",
+                "The Gatehouse"
+              ]
+            },
+            "anthropic": {
+              "status": "tested",
+              "mentioned": false,
+              "answer_text": "Here are some of the top rated restaurants and cafés in Highgate, London. These establishments are well-regarded for their quality food, service, and atmosphere.",
+              "tested_at": "2026-10-13T15:10:51.251Z",
+              "recommended_competitors": [
+                "The Flask",
+                "Café Hampstead",
+                "The Woodman",
+                "Highgate Deli",
+                "The Gate Restaurant"
+              ]
+            },
+            "gemini": {
+              "query": "top rated restaurants and cafés near me in Highgate, London, UK",
+              "status": "tested",
+              "mentioned": false,
+              "rank": null,
+              "answer_text": "Highgate offers a charming village dining scene known for top-tier gastropubs, artisanal brunch spots, and woodland cafés. The Red Lion & Sun is an award-winning gastropub celebrated for its seasonal British dishes, fresh seafood, and extensive wine list. The Flask provides historic 18th-century charm with elevated pub dining and renowned Sunday roasts. For daytime coffee and brunch, Archie's on Highgate Hill is a local favourite for specialty coffee and creative breakfast fare, while Queen's Wood Café offers a tranquil, fairytale woodland retreat for organic bites and homemade cakes. The Bull rounds out the list with modern British bistro dining and craft beers right on North Hill.",
+              "verbatim_answer": "Highgate offers a charming village dining scene known for top-tier gastropubs, artisanal brunch spots, and woodland cafés. The Red Lion & Sun is an award-winning gastropub celebrated for its seasonal British dishes, fresh seafood, and extensive wine list. The Flask provides historic 18th-century charm with elevated pub dining and renowned Sunday roasts. For daytime coffee and brunch, Archie's on Highgate Hill is a local favourite for specialty coffee and creative breakfast fare, while Queen's Wood Café offers a tranquil, fairytale woodland retreat for organic bites and homemade cakes. The Bull rounds out the list with modern British bistro dining and craft beers right on North Hill.",
+              "tested_at": "2026-10-13T15:10:49.065Z",
+              "recommended_competitors": [
+                "The Red Lion & Sun",
+                "The Flask",
+                "Archie's",
+                "Queen's Wood Café",
+                "The Bull"
+              ],
+              "failure_reason": null
+            }
+          },
+          "tested_at": "2026-10-13T15:10:49.065Z",
+          "recommended_competitors": [
+            "The Flask",
+            "Lauderdale House",
+            "The Highgate Society Café",
+            "Café Boulangerie",
+            "The Gatehouse",
+            "Café Hampstead",
+            "The Woodman",
+            "Highgate Deli",
+            "The Gate Restaurant",
+            "The Red Lion & Sun",
+            "Archie's",
+            "Queen's Wood Café",
+            "The Bull"
+          ]
+        },
+        {
+          "query": "recommended restaurants and cafés in Highgate, London, UK",
+          "status": "tested",
+          "mentioned": false,
+          "rank": null,
+          "answer_text": "Highgate offers an exceptional mix of historic dining spots, award-winning gastropubs, and charming independent cafés. Leading the list is The Red Lion & Sun, an acclaimed gastropub renowned for its seasonal British dishes, expansive wine list, and Sunday roasts. Just on the edge of the Heath, The Bull & Last delivers refined, high-end pub fare and hospitality in a handsome historic coaching inn. For Italian dining, Ostuni serves authentic southern Italian and Pugliese specialties in Highgate Village. When it comes to cafés and brunch, Archie's on Highgate Hill is a local favorite known for specialty coffee and creative brunch plates, while High Tea of Highgate provides a quintessentially quaint village setting for traditional afternoon teas, scones, and home-baked cakes.",
+          "verbatim_answer": "Highgate offers an exceptional mix of historic dining spots, award-winning gastropubs, and charming independent cafés. Leading the list is The Red Lion & Sun, an acclaimed gastropub renowned for its seasonal British dishes, expansive wine list, and Sunday roasts. Just on the edge of the Heath, The Bull & Last delivers refined, high-end pub fare and hospitality in a handsome historic coaching inn. For Italian dining, Ostuni serves authentic southern Italian and Pugliese specialties in Highgate Village. When it comes to cafés and brunch, Archie's on Highgate Hill is a local favorite known for specialty coffee and creative brunch plates, while High Tea of Highgate provides a quintessentially quaint village setting for traditional afternoon teas, scones, and home-baked cakes.",
+          "providers": {
+            "openai": {
+              "status": "tested",
+              "mentioned": false,
+              "answer_text": "Here are some recommended restaurants and cafés in Highgate, London, UK:",
+              "tested_at": "2026-10-13T15:10:51.229Z",
+              "recommended_competitors": [
+                "The Flask",
+                "Café Boulangerie",
+                "The Highgate Village Café",
+                "Lauderdale House",
+                "The Gatehouse"
+              ]
+            },
+            "anthropic": {
+              "status": "tested",
+              "mentioned": false,
+              "answer_text": "Highgate has several excellent restaurants and cafés offering diverse cuisines and atmospheres. Here are some highly recommended options for dining in the area.",
+              "tested_at": "2026-10-13T15:10:51.423Z",
+              "recommended_competitors": [
+                "The Flask",
+                "Café Noto",
+                "The Woodman",
+                "Highgate Deli",
+                "Osteria Tufo"
+              ]
+            },
+            "gemini": {
+              "query": "recommended restaurants and cafés in Highgate, London, UK",
+              "status": "tested",
+              "mentioned": false,
+              "rank": null,
+              "answer_text": "Highgate offers an exceptional mix of historic dining spots, award-winning gastropubs, and charming independent cafés. Leading the list is The Red Lion & Sun, an acclaimed gastropub renowned for its seasonal British dishes, expansive wine list, and Sunday roasts. Just on the edge of the Heath, The Bull & Last delivers refined, high-end pub fare and hospitality in a handsome historic coaching inn. For Italian dining, Ostuni serves authentic southern Italian and Pugliese specialties in Highgate Village. When it comes to cafés and brunch, Archie's on Highgate Hill is a local favorite known for specialty coffee and creative brunch plates, while High Tea of Highgate provides a quintessentially quaint village setting for traditional afternoon teas, scones, and home-baked cakes.",
+              "verbatim_answer": "Highgate offers an exceptional mix of historic dining spots, award-winning gastropubs, and charming independent cafés. Leading the list is The Red Lion & Sun, an acclaimed gastropub renowned for its seasonal British dishes, expansive wine list, and Sunday roasts. Just on the edge of the Heath, The Bull & Last delivers refined, high-end pub fare and hospitality in a handsome historic coaching inn. For Italian dining, Ostuni serves authentic southern Italian and Pugliese specialties in Highgate Village. When it comes to cafés and brunch, Archie's on Highgate Hill is a local favorite known for specialty coffee and creative brunch plates, while High Tea of Highgate provides a quintessentially quaint village setting for traditional afternoon teas, scones, and home-baked cakes.",
+              "tested_at": "2026-10-13T15:10:38.322Z",
+              "recommended_competitors": [
+                "The Red Lion & Sun",
+                "The Bull & Last",
+                "Ostuni",
+                "Archie's",
+                "High Tea of Highgate"
+              ],
+              "failure_reason": null
+            }
+          },
+          "tested_at": "2026-10-13T15:10:38.322Z",
+          "recommended_competitors": [
+            "The Flask",
+            "Café Boulangerie",
+            "The Highgate Village Café",
+            "Lauderdale House",
+            "The Gatehouse",
+            "Café Noto",
+            "The Woodman",
+            "Highgate Deli",
+            "Osteria Tufo",
+            "The Red Lion & Sun",
+            "The Bull & Last",
+            "Ostuni",
+            "Archie's",
+            "High Tea of Highgate"
+          ]
+        },
+        {
+          "query": "affordable restaurants and cafés in Highgate, London, UK",
+          "status": "tested",
+          "mentioned": false,
+          "rank": null,
+          "answer_text": "While Highgate is known for its historic charm and upscale dining, there are several fantastic, budget-friendly cafés and casual spots in and around the neighborhood:\n\n1. The Food Room: A beloved independent café right by Highgate station on Archway Road, renowned for its hearty breakfasts, standout chicken schnitzel sandwiches, and very reasonable prices.\n2. Queen's Wood Café: Tucked away in the ancient woodlands adjacent to Highgate, this rustic, dog-friendly spot serves affordable organic vegetarian meals, light lunches, and homemade cakes.\n3. Vanilla Cafe: A cozy neighborhood staple along Archway Road offering reasonably priced all-day breakfast, brunch classics, and fresh bakes.\n4. Archie's: A relaxed café and brunch venue just down Archway Road serving reasonably priced brunch plates, toasties, and specialty coffee.\n5. Margot Bakery: An acclaimed independent bakery café on Archway Road offering delicious, pocket-friendly pastries, sourdough, and coffee for a quick bite.",
+          "verbatim_answer": "While Highgate is known for its historic charm and upscale dining, there are several fantastic, budget-friendly cafés and casual spots in and around the neighborhood:\n\n1. The Food Room: A beloved independent café right by Highgate station on Archway Road, renowned for its hearty breakfasts, standout chicken schnitzel sandwiches, and very reasonable prices.\n2. Queen's Wood Café: Tucked away in the ancient woodlands adjacent to Highgate, this rustic, dog-friendly spot serves affordable organic vegetarian meals, light lunches, and homemade cakes.\n3. Vanilla Cafe: A cozy neighborhood staple along Archway Road offering reasonably priced all-day breakfast, brunch classics, and fresh bakes.\n4. Archie's: A relaxed café and brunch venue just down Archway Road serving reasonably priced brunch plates, toasties, and specialty coffee.\n5. Margot Bakery: An acclaimed independent bakery café on Archway Road offering delicious, pocket-friendly pastries, sourdough, and coffee for a quick bite.",
+          "providers": {
+            "openai": {
+              "status": "tested",
+              "mentioned": false,
+              "answer_text": "Here are some affordable restaurants and cafés in Highgate, London, UK:",
+              "tested_at": "2026-10-13T15:10:55.046Z",
+              "recommended_competitors": [
+                "The Flask",
+                "Café Boulangerie",
+                "The Highgate Village Café",
+                "Lauderdale House Café",
+                "The Gatehouse"
+              ]
+            },
+            "anthropic": {
+              "status": "tested",
+              "mentioned": false,
+              "answer_text": "Here are some affordable restaurants and cafés in Highgate, London where you can enjoy good food without breaking the bank. These establishments offer great value and a variety of cuisines to suit different tastes.",
+              "tested_at": "2026-10-13T15:10:53.450Z",
+              "recommended_competitors": [
+                "The Flask",
+                "Café Noto",
+                "The Woodman",
+                "Highgate Deli",
+                "Tally Ho! Toby Waterworth"
+              ]
+            },
+            "gemini": {
+              "query": "affordable restaurants and cafés in Highgate, London, UK",
+              "status": "tested",
+              "mentioned": false,
+              "rank": null,
+              "answer_text": "While Highgate is known for its historic charm and upscale dining, there are several fantastic, budget-friendly cafés and casual spots in and around the neighborhood:\n\n1. The Food Room: A beloved independent café right by Highgate station on Archway Road, renowned for its hearty breakfasts, standout chicken schnitzel sandwiches, and very reasonable prices.\n2. Queen's Wood Café: Tucked away in the ancient woodlands adjacent to Highgate, this rustic, dog-friendly spot serves affordable organic vegetarian meals, light lunches, and homemade cakes.\n3. Vanilla Cafe: A cozy neighborhood staple along Archway Road offering reasonably priced all-day breakfast, brunch classics, and fresh bakes.\n4. Archie's: A relaxed café and brunch venue just down Archway Road serving reasonably priced brunch plates, toasties, and specialty coffee.\n5. Margot Bakery: An acclaimed independent bakery café on Archway Road offering delicious, pocket-friendly pastries, sourdough, and coffee for a quick bite.",
+              "verbatim_answer": "While Highgate is known for its historic charm and upscale dining, there are several fantastic, budget-friendly cafés and casual spots in and around the neighborhood:\n\n1. The Food Room: A beloved independent café right by Highgate station on Archway Road, renowned for its hearty breakfasts, standout chicken schnitzel sandwiches, and very reasonable prices.\n2. Queen's Wood Café: Tucked away in the ancient woodlands adjacent to Highgate, this rustic, dog-friendly spot serves affordable organic vegetarian meals, light lunches, and homemade cakes.\n3. Vanilla Cafe: A cozy neighborhood staple along Archway Road offering reasonably priced all-day breakfast, brunch classics, and fresh bakes.\n4. Archie's: A relaxed café and brunch venue just down Archway Road serving reasonably priced brunch plates, toasties, and specialty coffee.\n5. Margot Bakery: An acclaimed independent bakery café on Archway Road offering delicious, pocket-friendly pastries, sourdough, and coffee for a quick bite.",
+              "tested_at": "2026-10-13T15:10:43.417Z",
+              "recommended_competitors": [
+                "The Food Room",
+                "Queen's Wood Café",
+                "Vanilla Cafe",
+                "Archie's",
+                "Margot Bakery"
+              ],
+              "failure_reason": null
+            }
+          },
+          "tested_at": "2026-10-13T15:10:43.417Z",
+          "recommended_competitors": [
+            "The Flask",
+            "Café Boulangerie",
+            "The Highgate Village Café",
+            "Lauderdale House Café",
+            "The Gatehouse",
+            "Café Noto",
+            "The Woodman",
+            "Highgate Deli",
+            "Tally Ho! Toby Waterworth",
+            "The Food Room",
+            "Queen's Wood Café",
+            "Vanilla Cafe",
+            "Archie's",
+            "Margot Bakery"
+          ]
+        },
+        {
+          "query": "trusted restaurants and cafés in Highgate, London, UK",
+          "status": "tested",
+          "mentioned": false,
+          "rank": null,
+          "answer_text": "Highgate offers a charming village dining atmosphere known for acclaimed gastropubs, relaxed neighbourhood bistros, and cosy cafés. Here are five of the most trusted and highly recommended spots in the area:\n\n1. The Red Lion & Sun: Frequently ranked among the UK's top gastropubs, this Highgate Village staple serves daily-changing rustic modern British cuisine, fresh seafood, an exceptional wine list, and celebrated Sunday roasts.\n2. Ostuni: A trusted local favourite specialising in authentic southern Italian and Pugliese fare, featuring hand-crafted pastas, wood-fired specialties, and regional wines in a stylish setting.\n3. The Flask: An iconic 18th-century pub and restaurant steeped in local history, offering quality seasonal British dining, classic pub staples, and a warm, atmospheric courtyard and fireside setting.\n4. Archie's: A vibrant neighbourhood café and brunch hotspot situated on Highgate Hill, beloved for its specialty coffee, creative breakfast plates, and relaxed daytime atmosphere.\n5. High Tea of Highgate: A quintessential traditional tea shop located on Highgate High Street, renowned for homemade cakes, fresh warm scones with clotted cream, and extensive tea selections.",
+          "verbatim_answer": "Highgate offers a charming village dining atmosphere known for acclaimed gastropubs, relaxed neighbourhood bistros, and cosy cafés. Here are five of the most trusted and highly recommended spots in the area:\n\n1. The Red Lion & Sun: Frequently ranked among the UK's top gastropubs, this Highgate Village staple serves daily-changing rustic modern British cuisine, fresh seafood, an exceptional wine list, and celebrated Sunday roasts.\n2. Ostuni: A trusted local favourite specialising in authentic southern Italian and Pugliese fare, featuring hand-crafted pastas, wood-fired specialties, and regional wines in a stylish setting.\n3. The Flask: An iconic 18th-century pub and restaurant steeped in local history, offering quality seasonal British dining, classic pub staples, and a warm, atmospheric courtyard and fireside setting.\n4. Archie's: A vibrant neighbourhood café and brunch hotspot situated on Highgate Hill, beloved for its specialty coffee, creative breakfast plates, and relaxed daytime atmosphere.\n5. High Tea of Highgate: A quintessential traditional tea shop located on Highgate High Street, renowned for homemade cakes, fresh warm scones with clotted cream, and extensive tea selections.",
+          "providers": {
+            "openai": {
+              "status": "tested",
+              "mentioned": false,
+              "answer_text": "Here are some trusted restaurants and cafés in Highgate, London, UK:",
+              "tested_at": "2026-10-13T15:10:53.230Z",
+              "recommended_competitors": [
+                "The Flask",
+                "Café Boulangerie",
+                "The Highgate Village Café",
+                "Lauderdale House",
+                "The Bull"
+              ]
+            },
+            "anthropic": {
+              "status": "tested",
+              "mentioned": false,
+              "answer_text": "Here are some trusted restaurants and cafés in Highgate, London that are well-regarded by locals and visitors alike.",
+              "tested_at": "2026-10-13T15:10:53.418Z",
+              "recommended_competitors": [
+                "The Flask",
+                "Café Noto",
+                "Highgate Deli",
+                "The Woodman",
+                "Tutti Frutti"
+              ]
+            },
+            "gemini": {
+              "query": "trusted restaurants and cafés in Highgate, London, UK",
+              "status": "tested",
+              "mentioned": false,
+              "rank": null,
+              "answer_text": "Highgate offers a charming village dining atmosphere known for acclaimed gastropubs, relaxed neighbourhood bistros, and cosy cafés. Here are five of the most trusted and highly recommended spots in the area:\n\n1. The Red Lion & Sun: Frequently ranked among the UK's top gastropubs, this Highgate Village staple serves daily-changing rustic modern British cuisine, fresh seafood, an exceptional wine list, and celebrated Sunday roasts.\n2. Ostuni: A trusted local favourite specialising in authentic southern Italian and Pugliese fare, featuring hand-crafted pastas, wood-fired specialties, and regional wines in a stylish setting.\n3. The Flask: An iconic 18th-century pub and restaurant steeped in local history, offering quality seasonal British dining, classic pub staples, and a warm, atmospheric courtyard and fireside setting.\n4. Archie's: A vibrant neighbourhood café and brunch hotspot situated on Highgate Hill, beloved for its specialty coffee, creative breakfast plates, and relaxed daytime atmosphere.\n5. High Tea of Highgate: A quintessential traditional tea shop located on Highgate High Street, renowned for homemade cakes, fresh warm scones with clotted cream, and extensive tea selections.",
+              "verbatim_answer": "Highgate offers a charming village dining atmosphere known for acclaimed gastropubs, relaxed neighbourhood bistros, and cosy cafés. Here are five of the most trusted and highly recommended spots in the area:\n\n1. The Red Lion & Sun: Frequently ranked among the UK's top gastropubs, this Highgate Village staple serves daily-changing rustic modern British cuisine, fresh seafood, an exceptional wine list, and celebrated Sunday roasts.\n2. Ostuni: A trusted local favourite specialising in authentic southern Italian and Pugliese fare, featuring hand-crafted pastas, wood-fired specialties, and regional wines in a stylish setting.\n3. The Flask: An iconic 18th-century pub and restaurant steeped in local history, offering quality seasonal British dining, classic pub staples, and a warm, atmospheric courtyard and fireside setting.\n4. Archie's: A vibrant neighbourhood café and brunch hotspot situated on Highgate Hill, beloved for its specialty coffee, creative breakfast plates, and relaxed daytime atmosphere.\n5. High Tea of Highgate: A quintessential traditional tea shop located on Highgate High Street, renowned for homemade cakes, fresh warm scones with clotted cream, and extensive tea selections.",
+              "tested_at": "2026-10-13T15:10:38.079Z",
+              "recommended_competitors": [
+                "The Red Lion & Sun",
+                "Ostuni",
+                "The Flask",
+                "Archie's",
+                "High Tea of Highgate"
+              ],
+              "failure_reason": null
+            }
+          },
+          "tested_at": "2026-10-13T15:10:38.079Z",
+          "recommended_competitors": [
+            "The Flask",
+            "Café Boulangerie",
+            "The Highgate Village Café",
+            "Lauderdale House",
+            "The Bull",
+            "Café Noto",
+            "Highgate Deli",
+            "The Woodman",
+            "Tutti Frutti",
+            "The Red Lion & Sun",
+            "Ostuni",
+            "Archie's",
+            "High Tea of Highgate"
+          ]
+        },
+        {
+          "query": "family friendly restaurants and cafés in Highgate, London, UK",
+          "status": "tested",
+          "mentioned": false,
+          "rank": null,
+          "answer_text": "Highgate offers excellent family-friendly dining spots, ranging from woodland park cafés to cosy village gastropubs with spacious gardens. Here are the top recommendations:\n\n1. The Red Lion & Sun – An acclaimed Highgate Village gastropub with a relaxed atmosphere, a dedicated kids' menu, high chairs, buggy accessibility, and two spacious beer gardens perfect for families.\n2. The Pavilion Café (Highgate Wood) – Situated right next to the children's adventure playground and nature trails in Highgate Wood, offering fresh pastries, light lunches, ice creams, and plenty of outdoor seating.\n3. Queen's Wood Cafe – Tucked inside ancient woodland on Muswell Hill Road, this charming community eco-café features an organic garden, wholesome homemade meals, children's activities, and a calm, nature-filled setting.\n4. Lauderdale House Café – Located inside historic Lauderdale House in Waterlow Park, providing homemade treats, hot drinks, light lunches, and an open terrace right beside the park lawns and play spaces.\n5. The Flask – A classic 17th-century Highgate pub that welcomes families with a dedicated children's menu, high chairs, and a large heated courtyard terrace.",
+          "verbatim_answer": "Highgate offers excellent family-friendly dining spots, ranging from woodland park cafés to cosy village gastropubs with spacious gardens. Here are the top recommendations:\n\n1. The Red Lion & Sun – An acclaimed Highgate Village gastropub with a relaxed atmosphere, a dedicated kids' menu, high chairs, buggy accessibility, and two spacious beer gardens perfect for families.\n2. The Pavilion Café (Highgate Wood) – Situated right next to the children's adventure playground and nature trails in Highgate Wood, offering fresh pastries, light lunches, ice creams, and plenty of outdoor seating.\n3. Queen's Wood Cafe – Tucked inside ancient woodland on Muswell Hill Road, this charming community eco-café features an organic garden, wholesome homemade meals, children's activities, and a calm, nature-filled setting.\n4. Lauderdale House Café – Located inside historic Lauderdale House in Waterlow Park, providing homemade treats, hot drinks, light lunches, and an open terrace right beside the park lawns and play spaces.\n5. The Flask – A classic 17th-century Highgate pub that welcomes families with a dedicated children's menu, high chairs, and a large heated courtyard terrace.",
+          "providers": {
+            "openai": {
+              "status": "tested",
+              "mentioned": false,
+              "answer_text": "Here are some family-friendly restaurants and cafés in Highgate, London, UK:",
+              "tested_at": "2026-10-13T15:10:54.410Z",
+              "recommended_competitors": [
+                "The Flask",
+                "Café Boulangerie",
+                "The Highgate Society Café",
+                "The Bull & Last",
+                "Lauderdale House Café"
+              ]
+            },
+            "anthropic": {
+              "status": "tested",
+              "mentioned": false,
+              "answer_text": "Here are some excellent family-friendly restaurants and cafés in Highgate, London where you can enjoy meals with children in a welcoming atmosphere.",
+              "tested_at": "2026-10-13T15:10:54.040Z",
+              "recommended_competitors": [
+                "The Flask",
+                "Highgate Wood Café",
+                "Café Rouge",
+                "The Woodman",
+                "Tossed"
+              ]
+            },
+            "gemini": {
+              "query": "family friendly restaurants and cafés in Highgate, London, UK",
+              "status": "tested",
+              "mentioned": false,
+              "rank": null,
+              "answer_text": "Highgate offers excellent family-friendly dining spots, ranging from woodland park cafés to cosy village gastropubs with spacious gardens. Here are the top recommendations:\n\n1. The Red Lion & Sun – An acclaimed Highgate Village gastropub with a relaxed atmosphere, a dedicated kids' menu, high chairs, buggy accessibility, and two spacious beer gardens perfect for families.\n2. The Pavilion Café (Highgate Wood) – Situated right next to the children's adventure playground and nature trails in Highgate Wood, offering fresh pastries, light lunches, ice creams, and plenty of outdoor seating.\n3. Queen's Wood Cafe – Tucked inside ancient woodland on Muswell Hill Road, this charming community eco-café features an organic garden, wholesome homemade meals, children's activities, and a calm, nature-filled setting.\n4. Lauderdale House Café – Located inside historic Lauderdale House in Waterlow Park, providing homemade treats, hot drinks, light lunches, and an open terrace right beside the park lawns and play spaces.\n5. The Flask – A classic 17th-century Highgate pub that welcomes families with a dedicated children's menu, high chairs, and a large heated courtyard terrace.",
+              "verbatim_answer": "Highgate offers excellent family-friendly dining spots, ranging from woodland park cafés to cosy village gastropubs with spacious gardens. Here are the top recommendations:\n\n1. The Red Lion & Sun – An acclaimed Highgate Village gastropub with a relaxed atmosphere, a dedicated kids' menu, high chairs, buggy accessibility, and two spacious beer gardens perfect for families.\n2. The Pavilion Café (Highgate Wood) – Situated right next to the children's adventure playground and nature trails in Highgate Wood, offering fresh pastries, light lunches, ice creams, and plenty of outdoor seating.\n3. Queen's Wood Cafe – Tucked inside ancient woodland on Muswell Hill Road, this charming community eco-café features an organic garden, wholesome homemade meals, children's activities, and a calm, nature-filled setting.\n4. Lauderdale House Café – Located inside historic Lauderdale House in Waterlow Park, providing homemade treats, hot drinks, light lunches, and an open terrace right beside the park lawns and play spaces.\n5. The Flask – A classic 17th-century Highgate pub that welcomes families with a dedicated children's menu, high chairs, and a large heated courtyard terrace.",
+              "tested_at": "2026-10-13T15:10:42.222Z",
+              "recommended_competitors": [
+                "The Red Lion & Sun",
+                "The Pavilion Café (Highgate Wood)",
+                "Queen's Wood Cafe",
+                "Lauderdale House Café",
+                "The Flask"
+              ],
+              "failure_reason": null
+            }
+          },
+          "tested_at": "2026-10-13T15:10:42.222Z",
+          "recommended_competitors": [
+            "The Flask",
+            "Café Boulangerie",
+            "The Highgate Society Café",
+            "The Bull & Last",
+            "Lauderdale House Café",
+            "Highgate Wood Café",
+            "Café Rouge",
+            "The Woodman",
+            "Tossed",
+            "The Red Lion & Sun",
+            "The Pavilion Café (Highgate Wood)",
+            "Queen's Wood Cafe"
+          ]
+        },
+        {
+          "query": "date night restaurants and cafés in Highgate, London, UK",
+          "status": "tested",
+          "mentioned": false,
+          "rank": null,
+          "answer_text": "Highgate is one of London's most picturesque and romantic hilltop villages, perfect for a cozy, memorable date night or daytime café rendezvous. Here are the top five recommended spots:\n\n1. The Red Lion & Sun: Widely celebrated as one of London's premier gastropubs, this spot pairs an exceptional, ever-changing seasonal British menu with one of the finest curated wine lists in the capital. The log fires in winter and fairy-lit covered garden in warmer months create an effortlessly romantic setting.\n\n2. The Flask: Steeped in 17th-century history, The Flask is quintessential Highgate charm. With its low-beamed ceilings, hidden snugs, flickering candlelit corners, and elevated pub dining, it offers an intimate, classic atmosphere ideal for drinks and dinner.\n\n3. Fabrizio: A beloved, intimate family-run Italian restaurant on Highgate Hill. Renowned for its warm hospitality, authentic handmade pastas, and wood-fired pizzas, Fabrizio delivers a lively, heartwarming Italian date night experience.\n\n4. The Gatehouse: Combining relaxed dining with cultural charm, The Gatehouse serves delicious British and Spanish-influenced dishes and tapas. It is also home to the renowned Upstairs at the Gatehouse fringe theatre, making it the ultimate destination for dinner and a show.\n\n5. Queen's Wood Café: If your date idea leans toward a romantic daytime stroll, this fairytale wooden cabin cafe nestled directly in ancient woodland is unmatched. Surrounded by greenery and serving artisanal coffees, teas, and homemade cakes, it feels like an enchanting escape from city life.",
+          "verbatim_answer": "Highgate is one of London's most picturesque and romantic hilltop villages, perfect for a cozy, memorable date night or daytime café rendezvous. Here are the top five recommended spots:\n\n1. The Red Lion & Sun: Widely celebrated as one of London's premier gastropubs, this spot pairs an exceptional, ever-changing seasonal British menu with one of the finest curated wine lists in the capital. The log fires in winter and fairy-lit covered garden in warmer months create an effortlessly romantic setting.\n\n2. The Flask: Steeped in 17th-century history, The Flask is quintessential Highgate charm. With its low-beamed ceilings, hidden snugs, flickering candlelit corners, and elevated pub dining, it offers an intimate, classic atmosphere ideal for drinks and dinner.\n\n3. Fabrizio: A beloved, intimate family-run Italian restaurant on Highgate Hill. Renowned for its warm hospitality, authentic handmade pastas, and wood-fired pizzas, Fabrizio delivers a lively, heartwarming Italian date night experience.\n\n4. The Gatehouse: Combining relaxed dining with cultural charm, The Gatehouse serves delicious British and Spanish-influenced dishes and tapas. It is also home to the renowned Upstairs at the Gatehouse fringe theatre, making it the ultimate destination for dinner and a show.\n\n5. Queen's Wood Café: If your date idea leans toward a romantic daytime stroll, this fairytale wooden cabin cafe nestled directly in ancient woodland is unmatched. Surrounded by greenery and serving artisanal coffees, teas, and homemade cakes, it feels like an enchanting escape from city life.",
+          "providers": {
+            "openai": {
+              "status": "tested",
+              "mentioned": false,
+              "answer_text": "Here are some great options for date night restaurants and cafés in Highgate, London:",
+              "tested_at": "2026-10-13T15:10:54.977Z",
+              "recommended_competitors": [
+                "The Bull",
+                "Lauderdale House",
+                "The Flask",
+                "Café Boulangerie",
+                "The Gatehouse"
+              ]
+            },
+            "anthropic": {
+              "status": "tested",
+              "mentioned": false,
+              "answer_text": "Here are some excellent date night restaurants and cafés in Highgate, London where you can enjoy a romantic evening or casual meal together.",
+              "tested_at": "2026-10-13T15:10:55.288Z",
+              "recommended_competitors": [
+                "The Flask",
+                "Osteria Tufo",
+                "Highgate Deli",
+                "The Woodman",
+                "Café Noto"
+              ]
+            },
+            "gemini": {
+              "query": "date night restaurants and cafés in Highgate, London, UK",
+              "status": "tested",
+              "mentioned": false,
+              "rank": null,
+              "answer_text": "Highgate is one of London's most picturesque and romantic hilltop villages, perfect for a cozy, memorable date night or daytime café rendezvous. Here are the top five recommended spots:\n\n1. The Red Lion & Sun: Widely celebrated as one of London's premier gastropubs, this spot pairs an exceptional, ever-changing seasonal British menu with one of the finest curated wine lists in the capital. The log fires in winter and fairy-lit covered garden in warmer months create an effortlessly romantic setting.\n\n2. The Flask: Steeped in 17th-century history, The Flask is quintessential Highgate charm. With its low-beamed ceilings, hidden snugs, flickering candlelit corners, and elevated pub dining, it offers an intimate, classic atmosphere ideal for drinks and dinner.\n\n3. Fabrizio: A beloved, intimate family-run Italian restaurant on Highgate Hill. Renowned for its warm hospitality, authentic handmade pastas, and wood-fired pizzas, Fabrizio delivers a lively, heartwarming Italian date night experience.\n\n4. The Gatehouse: Combining relaxed dining with cultural charm, The Gatehouse serves delicious British and Spanish-influenced dishes and tapas. It is also home to the renowned Upstairs at the Gatehouse fringe theatre, making it the ultimate destination for dinner and a show.\n\n5. Queen's Wood Café: If your date idea leans toward a romantic daytime stroll, this fairytale wooden cabin cafe nestled directly in ancient woodland is unmatched. Surrounded by greenery and serving artisanal coffees, teas, and homemade cakes, it feels like an enchanting escape from city life.",
+              "verbatim_answer": "Highgate is one of London's most picturesque and romantic hilltop villages, perfect for a cozy, memorable date night or daytime café rendezvous. Here are the top five recommended spots:\n\n1. The Red Lion & Sun: Widely celebrated as one of London's premier gastropubs, this spot pairs an exceptional, ever-changing seasonal British menu with one of the finest curated wine lists in the capital. The log fires in winter and fairy-lit covered garden in warmer months create an effortlessly romantic setting.\n\n2. The Flask: Steeped in 17th-century history, The Flask is quintessential Highgate charm. With its low-beamed ceilings, hidden snugs, flickering candlelit corners, and elevated pub dining, it offers an intimate, classic atmosphere ideal for drinks and dinner.\n\n3. Fabrizio: A beloved, intimate family-run Italian restaurant on Highgate Hill. Renowned for its warm hospitality, authentic handmade pastas, and wood-fired pizzas, Fabrizio delivers a lively, heartwarming Italian date night experience.\n\n4. The Gatehouse: Combining relaxed dining with cultural charm, The Gatehouse serves delicious British and Spanish-influenced dishes and tapas. It is also home to the renowned Upstairs at the Gatehouse fringe theatre, making it the ultimate destination for dinner and a show.\n\n5. Queen's Wood Café: If your date idea leans toward a romantic daytime stroll, this fairytale wooden cabin cafe nestled directly in ancient woodland is unmatched. Surrounded by greenery and serving artisanal coffees, teas, and homemade cakes, it feels like an enchanting escape from city life.",
+              "tested_at": "2026-10-13T15:10:45.728Z",
+              "recommended_competitors": [
+                "The Red Lion & Sun",
+                "The Flask",
+                "Fabrizio",
+                "The Gatehouse",
+                "Queen's Wood Café"
+              ],
+              "failure_reason": null
+            }
+          },
+          "tested_at": "2026-10-13T15:10:45.728Z",
+          "recommended_competitors": [
+            "The Bull",
+            "Lauderdale House",
+            "The Flask",
+            "Café Boulangerie",
+            "The Gatehouse",
+            "Osteria Tufo",
+            "Highgate Deli",
+            "The Woodman",
+            "Café Noto",
+            "The Red Lion & Sun",
+            "Fabrizio",
+            "Queen's Wood Café"
+          ]
+        },
+        {
+          "query": "restaurants and cafés open now in Highgate, London, UK",
+          "status": "tested",
+          "mentioned": false,
+          "rank": null,
+          "answer_text": "Here are top-rated restaurants and cafés to visit in Highgate, London: The Flask offers classic gastropub dining and drinks in a historic 17th-century setting; The Red Lion & Sun serves award-winning British food alongside an exceptional wine list; GAIL's Bakery Highgate provides artisan coffees, fresh pastries, and light savory bites; Queen's Wood Café offers organic dishes and refreshments tucked away in peaceful woodland; and Archie's on Highgate Hill is a lively local favourite for brunch, specialty coffee, and lunch.",
+          "verbatim_answer": "Here are top-rated restaurants and cafés to visit in Highgate, London: The Flask offers classic gastropub dining and drinks in a historic 17th-century setting; The Red Lion & Sun serves award-winning British food alongside an exceptional wine list; GAIL's Bakery Highgate provides artisan coffees, fresh pastries, and light savory bites; Queen's Wood Café offers organic dishes and refreshments tucked away in peaceful woodland; and Archie's on Highgate Hill is a lively local favourite for brunch, specialty coffee, and lunch.",
+          "providers": {
+            "openai": {
+              "status": "tested",
+              "mentioned": false,
+              "answer_text": "Here are some restaurants and cafés open now in Highgate, London, UK:",
+              "tested_at": "2026-10-13T15:10:56.214Z",
+              "recommended_competitors": [
+                "The Flask",
+                "Café Boulangerie",
+                "The Highgate Village Café",
+                "Lauderdale House",
+                "The Bull"
+              ]
+            },
+            "anthropic": {
+              "status": "tested",
+              "mentioned": false,
+              "answer_text": "Here are some popular restaurants and cafés in Highgate, London. Please note that opening hours vary by day and season, so I recommend checking their websites or calling ahead to confirm they're open now.",
+              "tested_at": "2026-10-13T15:10:56.432Z",
+              "recommended_competitors": [
+                "The Flask",
+                "Highgate Deli",
+                "Café Noto",
+                "The Woodman",
+                "Stag Bakery"
+              ]
+            },
+            "gemini": {
+              "query": "restaurants and cafés open now in Highgate, London, UK",
+              "status": "tested",
+              "mentioned": false,
+              "rank": null,
+              "answer_text": "Here are top-rated restaurants and cafés to visit in Highgate, London: The Flask offers classic gastropub dining and drinks in a historic 17th-century setting; The Red Lion & Sun serves award-winning British food alongside an exceptional wine list; GAIL's Bakery Highgate provides artisan coffees, fresh pastries, and light savory bites; Queen's Wood Café offers organic dishes and refreshments tucked away in peaceful woodland; and Archie's on Highgate Hill is a lively local favourite for brunch, specialty coffee, and lunch.",
+              "verbatim_answer": "Here are top-rated restaurants and cafés to visit in Highgate, London: The Flask offers classic gastropub dining and drinks in a historic 17th-century setting; The Red Lion & Sun serves award-winning British food alongside an exceptional wine list; GAIL's Bakery Highgate provides artisan coffees, fresh pastries, and light savory bites; Queen's Wood Café offers organic dishes and refreshments tucked away in peaceful woodland; and Archie's on Highgate Hill is a lively local favourite for brunch, specialty coffee, and lunch.",
+              "tested_at": "2026-10-13T15:10:35.607Z",
+              "recommended_competitors": [
+                "The Flask",
+                "The Red Lion & Sun",
+                "GAIL's Bakery Highgate",
+                "Queen's Wood Café",
+                "Archie's"
+              ],
+              "failure_reason": null
+            }
+          },
+          "tested_at": "2026-10-13T15:10:35.607Z",
+          "recommended_competitors": [
+            "The Flask",
+            "Café Boulangerie",
+            "The Highgate Village Café",
+            "Lauderdale House",
+            "The Bull",
+            "Highgate Deli",
+            "Café Noto",
+            "The Woodman",
+            "Stag Bakery",
+            "The Red Lion & Sun",
+            "GAIL's Bakery Highgate",
+            "Queen's Wood Café",
+            "Archie's"
+          ]
+        },
+        {
+          "query": "local restaurants and cafés in Highgate, London, UK",
+          "status": "tested",
+          "mentioned": false,
+          "rank": null,
+          "answer_text": "Highgate boasts an exceptional dining scene defined by historic village gastropubs and charming neighbourhood cafés. The Red Lion & Sun is a critically acclaimed gastropub famous for its seasonal modern British menu, stellar wine list, and Sunday roasts. The Flask provides quintessential 18th-century village tavern atmosphere alongside elevated pub classics. For sweets and a pot of tea, High Tea of Highgate is a beloved independent tearoom offering freshly baked cakes and traditional afternoon tea. The Food Room, situated near Highgate Station, is a local favourite for hearty breakfasts, brunch sandwiches, and artisan coffee. Finally, Queen's Wood Café serves wholesome organic food and drinks in an idyllic woodland setting.",
+          "verbatim_answer": "Highgate boasts an exceptional dining scene defined by historic village gastropubs and charming neighbourhood cafés. The Red Lion & Sun is a critically acclaimed gastropub famous for its seasonal modern British menu, stellar wine list, and Sunday roasts. The Flask provides quintessential 18th-century village tavern atmosphere alongside elevated pub classics. For sweets and a pot of tea, High Tea of Highgate is a beloved independent tearoom offering freshly baked cakes and traditional afternoon tea. The Food Room, situated near Highgate Station, is a local favourite for hearty breakfasts, brunch sandwiches, and artisan coffee. Finally, Queen's Wood Café serves wholesome organic food and drinks in an idyllic woodland setting.",
+          "providers": {
+            "openai": {
+              "status": "tested",
+              "mentioned": false,
+              "answer_text": "Here are some local restaurants and cafés in Highgate, London, UK that you might enjoy:",
+              "tested_at": "2026-10-13T15:10:57.120Z",
+              "recommended_competitors": [
+                "The Flask",
+                "Café Boulangerie",
+                "The Highgate Village Café",
+                "Lauderdale House",
+                "The Gatehouse"
+              ]
+            },
+            "anthropic": {
+              "status": "tested",
+              "mentioned": false,
+              "answer_text": "Here are some excellent local restaurants and cafés in Highgate, London that offer a variety of dining experiences from casual coffee spots to fine dining.",
+              "tested_at": "2026-10-13T15:10:56.994Z",
+              "recommended_competitors": [
+                "The Flask",
+                "Café Noto",
+                "The Woodman",
+                "Highgate Deli",
+                "Tossed"
+              ]
+            },
+            "gemini": {
+              "query": "local restaurants and cafés in Highgate, London, UK",
+              "status": "tested",
+              "mentioned": false,
+              "rank": null,
+              "answer_text": "Highgate boasts an exceptional dining scene defined by historic village gastropubs and charming neighbourhood cafés. The Red Lion & Sun is a critically acclaimed gastropub famous for its seasonal modern British menu, stellar wine list, and Sunday roasts. The Flask provides quintessential 18th-century village tavern atmosphere alongside elevated pub classics. For sweets and a pot of tea, High Tea of Highgate is a beloved independent tearoom offering freshly baked cakes and traditional afternoon tea. The Food Room, situated near Highgate Station, is a local favourite for hearty breakfasts, brunch sandwiches, and artisan coffee. Finally, Queen's Wood Café serves wholesome organic food and drinks in an idyllic woodland setting.",
+              "verbatim_answer": "Highgate boasts an exceptional dining scene defined by historic village gastropubs and charming neighbourhood cafés. The Red Lion & Sun is a critically acclaimed gastropub famous for its seasonal modern British menu, stellar wine list, and Sunday roasts. The Flask provides quintessential 18th-century village tavern atmosphere alongside elevated pub classics. For sweets and a pot of tea, High Tea of Highgate is a beloved independent tearoom offering freshly baked cakes and traditional afternoon tea. The Food Room, situated near Highgate Station, is a local favourite for hearty breakfasts, brunch sandwiches, and artisan coffee. Finally, Queen's Wood Café serves wholesome organic food and drinks in an idyllic woodland setting.",
+              "tested_at": "2026-10-13T15:10:43.459Z",
+              "recommended_competitors": [
+                "The Red Lion & Sun",
+                "The Flask",
+                "High Tea of Highgate",
+                "The Food Room",
+                "Queen's Wood Café"
+              ],
+              "failure_reason": null
+            }
+          },
+          "tested_at": "2026-10-13T15:10:43.459Z",
+          "recommended_competitors": [
+            "The Flask",
+            "Café Boulangerie",
+            "The Highgate Village Café",
+            "Lauderdale House",
+            "The Gatehouse",
+            "Café Noto",
+            "The Woodman",
+            "Highgate Deli",
+            "Tossed",
+            "The Red Lion & Sun",
+            "High Tea of Highgate",
+            "The Food Room",
+            "Queen's Wood Café"
+          ]
+        },
+        {
+          "query": "where should I go for restaurants and cafés in Highgate, London, UK",
+          "status": "tested",
+          "mentioned": false,
+          "rank": null,
+          "answer_text": "Highgate boasts an exceptional selection of gastropubs, neighborhood restaurants, and charming cafés. For dining, The Red Lion & Sun is an award-winning village pub renowned for exceptional seasonal food, seafood, and Sunday roasts. Ostuni offers authentic southern Italian and Pugliese cooking in a stylish setting, while The Bull & Last on the edge of Hampstead Heath is celebrated for refined British pub cuisine. For coffee and daytime fare, Archie's on Highgate Hill is a local favorite for specialty coffee and brunch dishes, and High Tea of Highgate in the village center provides a classic tea-room experience with loose-leaf teas, warm scones, and cakes.",
+          "verbatim_answer": "Highgate boasts an exceptional selection of gastropubs, neighborhood restaurants, and charming cafés. For dining, The Red Lion & Sun is an award-winning village pub renowned for exceptional seasonal food, seafood, and Sunday roasts. Ostuni offers authentic southern Italian and Pugliese cooking in a stylish setting, while The Bull & Last on the edge of Hampstead Heath is celebrated for refined British pub cuisine. For coffee and daytime fare, Archie's on Highgate Hill is a local favorite for specialty coffee and brunch dishes, and High Tea of Highgate in the village center provides a classic tea-room experience with loose-leaf teas, warm scones, and cakes.",
+          "providers": {
+            "openai": {
+              "status": "tested",
+              "mentioned": false,
+              "answer_text": "Here are some great restaurants and cafés in Highgate, London, UK:",
+              "tested_at": "2026-10-13T15:10:56.804Z",
+              "recommended_competitors": [
+                "The Flask",
+                "Café Boulangerie",
+                "The Bull",
+                "Highgate Village Café",
+                "Lauderdale House"
+              ]
+            },
+            "anthropic": {
+              "status": "tested",
+              "mentioned": false,
+              "answer_text": "Highgate has a wonderful selection of restaurants and cafés. Here are some excellent options to consider: Café Nero and Pret A Manger offer quick coffee and light bites, while The Flask pub serves traditional British fare in a historic setting. For dining, you'll find diverse options ranging from casual to upscale establishments in the village area.",
+              "tested_at": "2026-10-13T15:10:57.696Z",
+              "recommended_competitors": [
+                "The Flask",
+                "Café Nero",
+                "Pret A Manger",
+                "Highgate Deli",
+                "The Woodman"
+              ]
+            },
+            "gemini": {
+              "query": "where should I go for restaurants and cafés in Highgate, London, UK",
+              "status": "tested",
+              "mentioned": false,
+              "rank": null,
+              "answer_text": "Highgate boasts an exceptional selection of gastropubs, neighborhood restaurants, and charming cafés. For dining, The Red Lion & Sun is an award-winning village pub renowned for exceptional seasonal food, seafood, and Sunday roasts. Ostuni offers authentic southern Italian and Pugliese cooking in a stylish setting, while The Bull & Last on the edge of Hampstead Heath is celebrated for refined British pub cuisine. For coffee and daytime fare, Archie's on Highgate Hill is a local favorite for specialty coffee and brunch dishes, and High Tea of Highgate in the village center provides a classic tea-room experience with loose-leaf teas, warm scones, and cakes.",
+              "verbatim_answer": "Highgate boasts an exceptional selection of gastropubs, neighborhood restaurants, and charming cafés. For dining, The Red Lion & Sun is an award-winning village pub renowned for exceptional seasonal food, seafood, and Sunday roasts. Ostuni offers authentic southern Italian and Pugliese cooking in a stylish setting, while The Bull & Last on the edge of Hampstead Heath is celebrated for refined British pub cuisine. For coffee and daytime fare, Archie's on Highgate Hill is a local favorite for specialty coffee and brunch dishes, and High Tea of Highgate in the village center provides a classic tea-room experience with loose-leaf teas, warm scones, and cakes.",
+              "tested_at": "2026-10-13T15:10:42.935Z",
+              "recommended_competitors": [
+                "The Red Lion & Sun",
+                "Ostuni",
+                "Archie's",
+                "High Tea of Highgate",
+                "The Bull & Last"
+              ],
+              "failure_reason": null
+            }
+          },
+          "tested_at": "2026-10-13T15:10:42.935Z",
+          "recommended_competitors": [
+            "The Flask",
+            "Café Boulangerie",
+            "The Bull",
+            "Highgate Village Café",
+            "Lauderdale House",
+            "Café Nero",
+            "Pret A Manger",
+            "Highgate Deli",
+            "The Woodman",
+            "The Red Lion & Sun",
+            "Ostuni",
+            "Archie's",
+            "High Tea of Highgate",
+            "The Bull & Last"
+          ]
+        }
+      ],
+      "competitors": [
+        "The Flask",
+        "Café Boulangerie",
+        "The Highgate Society Café",
+        "Lauderdale House",
+        "The Gatehouse",
+        "Café Noto",
+        "The Woodman",
+        "Highgate Deli",
+        "Osteria Tufo",
+        "The Red Lion & Sun",
+        "The Bull & Last",
+        "Fabrizio Restaurant",
+        "Archie's",
+        "Café Hampstead",
+        "The Gate Restaurant",
+        "Queen's Wood Café",
+        "The Bull",
+        "The Highgate Village Café",
+        "Ostuni",
+        "High Tea of Highgate",
+        "Lauderdale House Café",
+        "Tally Ho! Toby Waterworth",
+        "The Food Room",
+        "Vanilla Cafe",
+        "Margot Bakery",
+        "Tutti Frutti",
+        "Highgate Wood Café",
+        "Café Rouge",
+        "Tossed",
+        "The Pavilion Café (Highgate Wood)",
+        "Queen's Wood Cafe",
+        "Fabrizio",
+        "Stag Bakery",
+        "GAIL's Bakery Highgate",
+        "Highgate Village Café",
+        "Café Nero",
+        "Pret A Manger"
+      ]
+    },
+    {
+      "place_id": "ChIJ80jf6IcadkgRJVXazXXEwsw",
+      "name": "Oliviya",
+      "address": "71 Hampstead High St, Greater, London NW3 1QP, UK",
+      "rating": 4.9,
+      "review_count": 1685,
+      "website": "https://oliviya.co.uk/",
+      "top_review": null,
+      "review_evidence_status": "not_returned",
+      "queries": [
+        {
+          "query": "best restaurants and cafés in Highgate, London, UK",
+          "status": "tested",
+          "mentioned": false,
+          "rank": null,
+          "answer_text": "Highgate offers an exceptional village dining scene combining historic British gastropubs, neighbourhood eateries, and cosy cafés. Leading the list is The Red Lion & Sun, an award-winning gastropub known for its daily-changing seasonal menu and expansive wine list. Close to Hampstead Heath, The Bull & Last delivers refined, Michelin-recognized British dining in a beautifully restored coaching inn. For quintessential village charm, The Flask provides classic pub fare in an 18th-century setting with cosy snugs and a courtyard. If you are in the mood for Italian comfort, Fabrizio Restaurant is a local favourite celebrated for authentic pizzas and homemade pastas. For brunch and speciality coffee, Archie's on Highgate Hill serves creative daytime dishes in a relaxed, friendly atmosphere.",
+          "verbatim_answer": "Highgate offers an exceptional village dining scene combining historic British gastropubs, neighbourhood eateries, and cosy cafés. Leading the list is The Red Lion & Sun, an award-winning gastropub known for its daily-changing seasonal menu and expansive wine list. Close to Hampstead Heath, The Bull & Last delivers refined, Michelin-recognized British dining in a beautifully restored coaching inn. For quintessential village charm, The Flask provides classic pub fare in an 18th-century setting with cosy snugs and a courtyard. If you are in the mood for Italian comfort, Fabrizio Restaurant is a local favourite celebrated for authentic pizzas and homemade pastas. For brunch and speciality coffee, Archie's on Highgate Hill serves creative daytime dishes in a relaxed, friendly atmosphere.",
+          "providers": {
+            "openai": {
+              "status": "tested",
+              "mentioned": false,
+              "answer_text": "Here are some of the best restaurants and cafés in Highgate, London, UK:",
+              "tested_at": "2026-10-13T15:10:51.665Z",
+              "recommended_competitors": [
+                "The Flask",
+                "Café Boulangerie",
+                "The Highgate Society Café",
+                "Lauderdale House",
+                "The Gatehouse"
+              ]
+            },
+            "anthropic": {
+              "status": "tested",
+              "mentioned": false,
+              "answer_text": "Highgate has several excellent restaurants and cafés offering diverse cuisines and atmospheres. Here are some of the best options in the area, ranging from casual cafés to fine dining establishments.",
+              "tested_at": "2026-10-13T15:10:51.258Z",
+              "recommended_competitors": [
+                "The Flask",
+                "Café Noto",
+                "The Woodman",
+                "Highgate Deli",
+                "Osteria Tufo"
+              ]
+            },
+            "gemini": {
+              "query": "best restaurants and cafés in Highgate, London, UK",
+              "status": "tested",
+              "mentioned": false,
+              "rank": null,
+              "answer_text": "Highgate offers an exceptional village dining scene combining historic British gastropubs, neighbourhood eateries, and cosy cafés. Leading the list is The Red Lion & Sun, an award-winning gastropub known for its daily-changing seasonal menu and expansive wine list. Close to Hampstead Heath, The Bull & Last delivers refined, Michelin-recognized British dining in a beautifully restored coaching inn. For quintessential village charm, The Flask provides classic pub fare in an 18th-century setting with cosy snugs and a courtyard. If you are in the mood for Italian comfort, Fabrizio Restaurant is a local favourite celebrated for authentic pizzas and homemade pastas. For brunch and speciality coffee, Archie's on Highgate Hill serves creative daytime dishes in a relaxed, friendly atmosphere.",
+              "verbatim_answer": "Highgate offers an exceptional village dining scene combining historic British gastropubs, neighbourhood eateries, and cosy cafés. Leading the list is The Red Lion & Sun, an award-winning gastropub known for its daily-changing seasonal menu and expansive wine list. Close to Hampstead Heath, The Bull & Last delivers refined, Michelin-recognized British dining in a beautifully restored coaching inn. For quintessential village charm, The Flask provides classic pub fare in an 18th-century setting with cosy snugs and a courtyard. If you are in the mood for Italian comfort, Fabrizio Restaurant is a local favourite celebrated for authentic pizzas and homemade pastas. For brunch and speciality coffee, Archie's on Highgate Hill serves creative daytime dishes in a relaxed, friendly atmosphere.",
+              "tested_at": "2026-10-13T15:10:39.594Z",
+              "recommended_competitors": [
+                "The Red Lion & Sun",
+                "The Bull & Last",
+                "The Flask",
+                "Fabrizio Restaurant",
+                "Archie's"
+              ],
+              "failure_reason": null
+            }
+          },
+          "tested_at": "2026-10-13T15:10:39.594Z",
+          "recommended_competitors": [
+            "The Flask",
+            "Café Boulangerie",
+            "The Highgate Society Café",
+            "Lauderdale House",
+            "The Gatehouse",
+            "Café Noto",
+            "The Woodman",
+            "Highgate Deli",
+            "Osteria Tufo",
+            "The Red Lion & Sun",
+            "The Bull & Last",
+            "Fabrizio Restaurant",
+            "Archie's"
+          ]
+        },
+        {
+          "query": "top rated restaurants and cafés near me in Highgate, London, UK",
+          "status": "tested",
+          "mentioned": false,
+          "rank": null,
+          "answer_text": "Highgate offers a charming village dining scene known for top-tier gastropubs, artisanal brunch spots, and woodland cafés. The Red Lion & Sun is an award-winning gastropub celebrated for its seasonal British dishes, fresh seafood, and extensive wine list. The Flask provides historic 18th-century charm with elevated pub dining and renowned Sunday roasts. For daytime coffee and brunch, Archie's on Highgate Hill is a local favourite for specialty coffee and creative breakfast fare, while Queen's Wood Café offers a tranquil, fairytale woodland retreat for organic bites and homemade cakes. The Bull rounds out the list with modern British bistro dining and craft beers right on North Hill.",
+          "verbatim_answer": "Highgate offers a charming village dining scene known for top-tier gastropubs, artisanal brunch spots, and woodland cafés. The Red Lion & Sun is an award-winning gastropub celebrated for its seasonal British dishes, fresh seafood, and extensive wine list. The Flask provides historic 18th-century charm with elevated pub dining and renowned Sunday roasts. For daytime coffee and brunch, Archie's on Highgate Hill is a local favourite for specialty coffee and creative breakfast fare, while Queen's Wood Café offers a tranquil, fairytale woodland retreat for organic bites and homemade cakes. The Bull rounds out the list with modern British bistro dining and craft beers right on North Hill.",
+          "providers": {
+            "openai": {
+              "status": "tested",
+              "mentioned": false,
+              "answer_text": "Here are some top-rated restaurants and cafés in Highgate, London, UK:",
+              "tested_at": "2026-10-13T15:10:52.177Z",
+              "recommended_competitors": [
+                "The Flask",
+                "Lauderdale House",
+                "The Highgate Society Café",
+                "Café Boulangerie",
+                "The Gatehouse"
+              ]
+            },
+            "anthropic": {
+              "status": "tested",
+              "mentioned": false,
+              "answer_text": "Here are some of the top rated restaurants and cafés in Highgate, London. These establishments are well-regarded for their quality food, service, and atmosphere.",
+              "tested_at": "2026-10-13T15:10:51.251Z",
+              "recommended_competitors": [
+                "The Flask",
+                "Café Hampstead",
+                "The Woodman",
+                "Highgate Deli",
+                "The Gate Restaurant"
+              ]
+            },
+            "gemini": {
+              "query": "top rated restaurants and cafés near me in Highgate, London, UK",
+              "status": "tested",
+              "mentioned": false,
+              "rank": null,
+              "answer_text": "Highgate offers a charming village dining scene known for top-tier gastropubs, artisanal brunch spots, and woodland cafés. The Red Lion & Sun is an award-winning gastropub celebrated for its seasonal British dishes, fresh seafood, and extensive wine list. The Flask provides historic 18th-century charm with elevated pub dining and renowned Sunday roasts. For daytime coffee and brunch, Archie's on Highgate Hill is a local favourite for specialty coffee and creative breakfast fare, while Queen's Wood Café offers a tranquil, fairytale woodland retreat for organic bites and homemade cakes. The Bull rounds out the list with modern British bistro dining and craft beers right on North Hill.",
+              "verbatim_answer": "Highgate offers a charming village dining scene known for top-tier gastropubs, artisanal brunch spots, and woodland cafés. The Red Lion & Sun is an award-winning gastropub celebrated for its seasonal British dishes, fresh seafood, and extensive wine list. The Flask provides historic 18th-century charm with elevated pub dining and renowned Sunday roasts. For daytime coffee and brunch, Archie's on Highgate Hill is a local favourite for specialty coffee and creative breakfast fare, while Queen's Wood Café offers a tranquil, fairytale woodland retreat for organic bites and homemade cakes. The Bull rounds out the list with modern British bistro dining and craft beers right on North Hill.",
+              "tested_at": "2026-10-13T15:10:49.065Z",
+              "recommended_competitors": [
+                "The Red Lion & Sun",
+                "The Flask",
+                "Archie's",
+                "Queen's Wood Café",
+                "The Bull"
+              ],
+              "failure_reason": null
+            }
+          },
+          "tested_at": "2026-10-13T15:10:49.065Z",
+          "recommended_competitors": [
+            "The Flask",
+            "Lauderdale House",
+            "The Highgate Society Café",
+            "Café Boulangerie",
+            "The Gatehouse",
+            "Café Hampstead",
+            "The Woodman",
+            "Highgate Deli",
+            "The Gate Restaurant",
+            "The Red Lion & Sun",
+            "Archie's",
+            "Queen's Wood Café",
+            "The Bull"
+          ]
+        },
+        {
+          "query": "recommended restaurants and cafés in Highgate, London, UK",
+          "status": "tested",
+          "mentioned": false,
+          "rank": null,
+          "answer_text": "Highgate offers an exceptional mix of historic dining spots, award-winning gastropubs, and charming independent cafés. Leading the list is The Red Lion & Sun, an acclaimed gastropub renowned for its seasonal British dishes, expansive wine list, and Sunday roasts. Just on the edge of the Heath, The Bull & Last delivers refined, high-end pub fare and hospitality in a handsome historic coaching inn. For Italian dining, Ostuni serves authentic southern Italian and Pugliese specialties in Highgate Village. When it comes to cafés and brunch, Archie's on Highgate Hill is a local favorite known for specialty coffee and creative brunch plates, while High Tea of Highgate provides a quintessentially quaint village setting for traditional afternoon teas, scones, and home-baked cakes.",
+          "verbatim_answer": "Highgate offers an exceptional mix of historic dining spots, award-winning gastropubs, and charming independent cafés. Leading the list is The Red Lion & Sun, an acclaimed gastropub renowned for its seasonal British dishes, expansive wine list, and Sunday roasts. Just on the edge of the Heath, The Bull & Last delivers refined, high-end pub fare and hospitality in a handsome historic coaching inn. For Italian dining, Ostuni serves authentic southern Italian and Pugliese specialties in Highgate Village. When it comes to cafés and brunch, Archie's on Highgate Hill is a local favorite known for specialty coffee and creative brunch plates, while High Tea of Highgate provides a quintessentially quaint village setting for traditional afternoon teas, scones, and home-baked cakes.",
+          "providers": {
+            "openai": {
+              "status": "tested",
+              "mentioned": false,
+              "answer_text": "Here are some recommended restaurants and cafés in Highgate, London, UK:",
+              "tested_at": "2026-10-13T15:10:51.229Z",
+              "recommended_competitors": [
+                "The Flask",
+                "Café Boulangerie",
+                "The Highgate Village Café",
+                "Lauderdale House",
+                "The Gatehouse"
+              ]
+            },
+            "anthropic": {
+              "status": "tested",
+              "mentioned": false,
+              "answer_text": "Highgate has several excellent restaurants and cafés offering diverse cuisines and atmospheres. Here are some highly recommended options for dining in the area.",
+              "tested_at": "2026-10-13T15:10:51.423Z",
+              "recommended_competitors": [
+                "The Flask",
+                "Café Noto",
+                "The Woodman",
+                "Highgate Deli",
+                "Osteria Tufo"
+              ]
+            },
+            "gemini": {
+              "query": "recommended restaurants and cafés in Highgate, London, UK",
+              "status": "tested",
+              "mentioned": false,
+              "rank": null,
+              "answer_text": "Highgate offers an exceptional mix of historic dining spots, award-winning gastropubs, and charming independent cafés. Leading the list is The Red Lion & Sun, an acclaimed gastropub renowned for its seasonal British dishes, expansive wine list, and Sunday roasts. Just on the edge of the Heath, The Bull & Last delivers refined, high-end pub fare and hospitality in a handsome historic coaching inn. For Italian dining, Ostuni serves authentic southern Italian and Pugliese specialties in Highgate Village. When it comes to cafés and brunch, Archie's on Highgate Hill is a local favorite known for specialty coffee and creative brunch plates, while High Tea of Highgate provides a quintessentially quaint village setting for traditional afternoon teas, scones, and home-baked cakes.",
+              "verbatim_answer": "Highgate offers an exceptional mix of historic dining spots, award-winning gastropubs, and charming independent cafés. Leading the list is The Red Lion & Sun, an acclaimed gastropub renowned for its seasonal British dishes, expansive wine list, and Sunday roasts. Just on the edge of the Heath, The Bull & Last delivers refined, high-end pub fare and hospitality in a handsome historic coaching inn. For Italian dining, Ostuni serves authentic southern Italian and Pugliese specialties in Highgate Village. When it comes to cafés and brunch, Archie's on Highgate Hill is a local favorite known for specialty coffee and creative brunch plates, while High Tea of Highgate provides a quintessentially quaint village setting for traditional afternoon teas, scones, and home-baked cakes.",
+              "tested_at": "2026-10-13T15:10:38.322Z",
+              "recommended_competitors": [
+                "The Red Lion & Sun",
+                "The Bull & Last",
+                "Ostuni",
+                "Archie's",
+                "High Tea of Highgate"
+              ],
+              "failure_reason": null
+            }
+          },
+          "tested_at": "2026-10-13T15:10:38.322Z",
+          "recommended_competitors": [
+            "The Flask",
+            "Café Boulangerie",
+            "The Highgate Village Café",
+            "Lauderdale House",
+            "The Gatehouse",
+            "Café Noto",
+            "The Woodman",
+            "Highgate Deli",
+            "Osteria Tufo",
+            "The Red Lion & Sun",
+            "The Bull & Last",
+            "Ostuni",
+            "Archie's",
+            "High Tea of Highgate"
+          ]
+        },
+        {
+          "query": "affordable restaurants and cafés in Highgate, London, UK",
+          "status": "tested",
+          "mentioned": false,
+          "rank": null,
+          "answer_text": "While Highgate is known for its historic charm and upscale dining, there are several fantastic, budget-friendly cafés and casual spots in and around the neighborhood:\n\n1. The Food Room: A beloved independent café right by Highgate station on Archway Road, renowned for its hearty breakfasts, standout chicken schnitzel sandwiches, and very reasonable prices.\n2. Queen's Wood Café: Tucked away in the ancient woodlands adjacent to Highgate, this rustic, dog-friendly spot serves affordable organic vegetarian meals, light lunches, and homemade cakes.\n3. Vanilla Cafe: A cozy neighborhood staple along Archway Road offering reasonably priced all-day breakfast, brunch classics, and fresh bakes.\n4. Archie's: A relaxed café and brunch venue just down Archway Road serving reasonably priced brunch plates, toasties, and specialty coffee.\n5. Margot Bakery: An acclaimed independent bakery café on Archway Road offering delicious, pocket-friendly pastries, sourdough, and coffee for a quick bite.",
+          "verbatim_answer": "While Highgate is known for its historic charm and upscale dining, there are several fantastic, budget-friendly cafés and casual spots in and around the neighborhood:\n\n1. The Food Room: A beloved independent café right by Highgate station on Archway Road, renowned for its hearty breakfasts, standout chicken schnitzel sandwiches, and very reasonable prices.\n2. Queen's Wood Café: Tucked away in the ancient woodlands adjacent to Highgate, this rustic, dog-friendly spot serves affordable organic vegetarian meals, light lunches, and homemade cakes.\n3. Vanilla Cafe: A cozy neighborhood staple along Archway Road offering reasonably priced all-day breakfast, brunch classics, and fresh bakes.\n4. Archie's: A relaxed café and brunch venue just down Archway Road serving reasonably priced brunch plates, toasties, and specialty coffee.\n5. Margot Bakery: An acclaimed independent bakery café on Archway Road offering delicious, pocket-friendly pastries, sourdough, and coffee for a quick bite.",
+          "providers": {
+            "openai": {
+              "status": "tested",
+              "mentioned": false,
+              "answer_text": "Here are some affordable restaurants and cafés in Highgate, London, UK:",
+              "tested_at": "2026-10-13T15:10:55.046Z",
+              "recommended_competitors": [
+                "The Flask",
+                "Café Boulangerie",
+                "The Highgate Village Café",
+                "Lauderdale House Café",
+                "The Gatehouse"
+              ]
+            },
+            "anthropic": {
+              "status": "tested",
+              "mentioned": false,
+              "answer_text": "Here are some affordable restaurants and cafés in Highgate, London where you can enjoy good food without breaking the bank. These establishments offer great value and a variety of cuisines to suit different tastes.",
+              "tested_at": "2026-10-13T15:10:53.450Z",
+              "recommended_competitors": [
+                "The Flask",
+                "Café Noto",
+                "The Woodman",
+                "Highgate Deli",
+                "Tally Ho! Toby Waterworth"
+              ]
+            },
+            "gemini": {
+              "query": "affordable restaurants and cafés in Highgate, London, UK",
+              "status": "tested",
+              "mentioned": false,
+              "rank": null,
+              "answer_text": "While Highgate is known for its historic charm and upscale dining, there are several fantastic, budget-friendly cafés and casual spots in and around the neighborhood:\n\n1. The Food Room: A beloved independent café right by Highgate station on Archway Road, renowned for its hearty breakfasts, standout chicken schnitzel sandwiches, and very reasonable prices.\n2. Queen's Wood Café: Tucked away in the ancient woodlands adjacent to Highgate, this rustic, dog-friendly spot serves affordable organic vegetarian meals, light lunches, and homemade cakes.\n3. Vanilla Cafe: A cozy neighborhood staple along Archway Road offering reasonably priced all-day breakfast, brunch classics, and fresh bakes.\n4. Archie's: A relaxed café and brunch venue just down Archway Road serving reasonably priced brunch plates, toasties, and specialty coffee.\n5. Margot Bakery: An acclaimed independent bakery café on Archway Road offering delicious, pocket-friendly pastries, sourdough, and coffee for a quick bite.",
+              "verbatim_answer": "While Highgate is known for its historic charm and upscale dining, there are several fantastic, budget-friendly cafés and casual spots in and around the neighborhood:\n\n1. The Food Room: A beloved independent café right by Highgate station on Archway Road, renowned for its hearty breakfasts, standout chicken schnitzel sandwiches, and very reasonable prices.\n2. Queen's Wood Café: Tucked away in the ancient woodlands adjacent to Highgate, this rustic, dog-friendly spot serves affordable organic vegetarian meals, light lunches, and homemade cakes.\n3. Vanilla Cafe: A cozy neighborhood staple along Archway Road offering reasonably priced all-day breakfast, brunch classics, and fresh bakes.\n4. Archie's: A relaxed café and brunch venue just down Archway Road serving reasonably priced brunch plates, toasties, and specialty coffee.\n5. Margot Bakery: An acclaimed independent bakery café on Archway Road offering delicious, pocket-friendly pastries, sourdough, and coffee for a quick bite.",
+              "tested_at": "2026-10-13T15:10:43.417Z",
+              "recommended_competitors": [
+                "The Food Room",
+                "Queen's Wood Café",
+                "Vanilla Cafe",
+                "Archie's",
+                "Margot Bakery"
+              ],
+              "failure_reason": null
+            }
+          },
+          "tested_at": "2026-10-13T15:10:43.417Z",
+          "recommended_competitors": [
+            "The Flask",
+            "Café Boulangerie",
+            "The Highgate Village Café",
+            "Lauderdale House Café",
+            "The Gatehouse",
+            "Café Noto",
+            "The Woodman",
+            "Highgate Deli",
+            "Tally Ho! Toby Waterworth",
+            "The Food Room",
+            "Queen's Wood Café",
+            "Vanilla Cafe",
+            "Archie's",
+            "Margot Bakery"
+          ]
+        },
+        {
+          "query": "trusted restaurants and cafés in Highgate, London, UK",
+          "status": "tested",
+          "mentioned": false,
+          "rank": null,
+          "answer_text": "Highgate offers a charming village dining atmosphere known for acclaimed gastropubs, relaxed neighbourhood bistros, and cosy cafés. Here are five of the most trusted and highly recommended spots in the area:\n\n1. The Red Lion & Sun: Frequently ranked among the UK's top gastropubs, this Highgate Village staple serves daily-changing rustic modern British cuisine, fresh seafood, an exceptional wine list, and celebrated Sunday roasts.\n2. Ostuni: A trusted local favourite specialising in authentic southern Italian and Pugliese fare, featuring hand-crafted pastas, wood-fired specialties, and regional wines in a stylish setting.\n3. The Flask: An iconic 18th-century pub and restaurant steeped in local history, offering quality seasonal British dining, classic pub staples, and a warm, atmospheric courtyard and fireside setting.\n4. Archie's: A vibrant neighbourhood café and brunch hotspot situated on Highgate Hill, beloved for its specialty coffee, creative breakfast plates, and relaxed daytime atmosphere.\n5. High Tea of Highgate: A quintessential traditional tea shop located on Highgate High Street, renowned for homemade cakes, fresh warm scones with clotted cream, and extensive tea selections.",
+          "verbatim_answer": "Highgate offers a charming village dining atmosphere known for acclaimed gastropubs, relaxed neighbourhood bistros, and cosy cafés. Here are five of the most trusted and highly recommended spots in the area:\n\n1. The Red Lion & Sun: Frequently ranked among the UK's top gastropubs, this Highgate Village staple serves daily-changing rustic modern British cuisine, fresh seafood, an exceptional wine list, and celebrated Sunday roasts.\n2. Ostuni: A trusted local favourite specialising in authentic southern Italian and Pugliese fare, featuring hand-crafted pastas, wood-fired specialties, and regional wines in a stylish setting.\n3. The Flask: An iconic 18th-century pub and restaurant steeped in local history, offering quality seasonal British dining, classic pub staples, and a warm, atmospheric courtyard and fireside setting.\n4. Archie's: A vibrant neighbourhood café and brunch hotspot situated on Highgate Hill, beloved for its specialty coffee, creative breakfast plates, and relaxed daytime atmosphere.\n5. High Tea of Highgate: A quintessential traditional tea shop located on Highgate High Street, renowned for homemade cakes, fresh warm scones with clotted cream, and extensive tea selections.",
+          "providers": {
+            "openai": {
+              "status": "tested",
+              "mentioned": false,
+              "answer_text": "Here are some trusted restaurants and cafés in Highgate, London, UK:",
+              "tested_at": "2026-10-13T15:10:53.230Z",
+              "recommended_competitors": [
+                "The Flask",
+                "Café Boulangerie",
+                "The Highgate Village Café",
+                "Lauderdale House",
+                "The Bull"
+              ]
+            },
+            "anthropic": {
+              "status": "tested",
+              "mentioned": false,
+              "answer_text": "Here are some trusted restaurants and cafés in Highgate, London that are well-regarded by locals and visitors alike.",
+              "tested_at": "2026-10-13T15:10:53.418Z",
+              "recommended_competitors": [
+                "The Flask",
+                "Café Noto",
+                "Highgate Deli",
+                "The Woodman",
+                "Tutti Frutti"
+              ]
+            },
+            "gemini": {
+              "query": "trusted restaurants and cafés in Highgate, London, UK",
+              "status": "tested",
+              "mentioned": false,
+              "rank": null,
+              "answer_text": "Highgate offers a charming village dining atmosphere known for acclaimed gastropubs, relaxed neighbourhood bistros, and cosy cafés. Here are five of the most trusted and highly recommended spots in the area:\n\n1. The Red Lion & Sun: Frequently ranked among the UK's top gastropubs, this Highgate Village staple serves daily-changing rustic modern British cuisine, fresh seafood, an exceptional wine list, and celebrated Sunday roasts.\n2. Ostuni: A trusted local favourite specialising in authentic southern Italian and Pugliese fare, featuring hand-crafted pastas, wood-fired specialties, and regional wines in a stylish setting.\n3. The Flask: An iconic 18th-century pub and restaurant steeped in local history, offering quality seasonal British dining, classic pub staples, and a warm, atmospheric courtyard and fireside setting.\n4. Archie's: A vibrant neighbourhood café and brunch hotspot situated on Highgate Hill, beloved for its specialty coffee, creative breakfast plates, and relaxed daytime atmosphere.\n5. High Tea of Highgate: A quintessential traditional tea shop located on Highgate High Street, renowned for homemade cakes, fresh warm scones with clotted cream, and extensive tea selections.",
+              "verbatim_answer": "Highgate offers a charming village dining atmosphere known for acclaimed gastropubs, relaxed neighbourhood bistros, and cosy cafés. Here are five of the most trusted and highly recommended spots in the area:\n\n1. The Red Lion & Sun: Frequently ranked among the UK's top gastropubs, this Highgate Village staple serves daily-changing rustic modern British cuisine, fresh seafood, an exceptional wine list, and celebrated Sunday roasts.\n2. Ostuni: A trusted local favourite specialising in authentic southern Italian and Pugliese fare, featuring hand-crafted pastas, wood-fired specialties, and regional wines in a stylish setting.\n3. The Flask: An iconic 18th-century pub and restaurant steeped in local history, offering quality seasonal British dining, classic pub staples, and a warm, atmospheric courtyard and fireside setting.\n4. Archie's: A vibrant neighbourhood café and brunch hotspot situated on Highgate Hill, beloved for its specialty coffee, creative breakfast plates, and relaxed daytime atmosphere.\n5. High Tea of Highgate: A quintessential traditional tea shop located on Highgate High Street, renowned for homemade cakes, fresh warm scones with clotted cream, and extensive tea selections.",
+              "tested_at": "2026-10-13T15:10:38.079Z",
+              "recommended_competitors": [
+                "The Red Lion & Sun",
+                "Ostuni",
+                "The Flask",
+                "Archie's",
+                "High Tea of Highgate"
+              ],
+              "failure_reason": null
+            }
+          },
+          "tested_at": "2026-10-13T15:10:38.079Z",
+          "recommended_competitors": [
+            "The Flask",
+            "Café Boulangerie",
+            "The Highgate Village Café",
+            "Lauderdale House",
+            "The Bull",
+            "Café Noto",
+            "Highgate Deli",
+            "The Woodman",
+            "Tutti Frutti",
+            "The Red Lion & Sun",
+            "Ostuni",
+            "Archie's",
+            "High Tea of Highgate"
+          ]
+        },
+        {
+          "query": "family friendly restaurants and cafés in Highgate, London, UK",
+          "status": "tested",
+          "mentioned": false,
+          "rank": null,
+          "answer_text": "Highgate offers excellent family-friendly dining spots, ranging from woodland park cafés to cosy village gastropubs with spacious gardens. Here are the top recommendations:\n\n1. The Red Lion & Sun – An acclaimed Highgate Village gastropub with a relaxed atmosphere, a dedicated kids' menu, high chairs, buggy accessibility, and two spacious beer gardens perfect for families.\n2. The Pavilion Café (Highgate Wood) – Situated right next to the children's adventure playground and nature trails in Highgate Wood, offering fresh pastries, light lunches, ice creams, and plenty of outdoor seating.\n3. Queen's Wood Cafe – Tucked inside ancient woodland on Muswell Hill Road, this charming community eco-café features an organic garden, wholesome homemade meals, children's activities, and a calm, nature-filled setting.\n4. Lauderdale House Café – Located inside historic Lauderdale House in Waterlow Park, providing homemade treats, hot drinks, light lunches, and an open terrace right beside the park lawns and play spaces.\n5. The Flask – A classic 17th-century Highgate pub that welcomes families with a dedicated children's menu, high chairs, and a large heated courtyard terrace.",
+          "verbatim_answer": "Highgate offers excellent family-friendly dining spots, ranging from woodland park cafés to cosy village gastropubs with spacious gardens. Here are the top recommendations:\n\n1. The Red Lion & Sun – An acclaimed Highgate Village gastropub with a relaxed atmosphere, a dedicated kids' menu, high chairs, buggy accessibility, and two spacious beer gardens perfect for families.\n2. The Pavilion Café (Highgate Wood) – Situated right next to the children's adventure playground and nature trails in Highgate Wood, offering fresh pastries, light lunches, ice creams, and plenty of outdoor seating.\n3. Queen's Wood Cafe – Tucked inside ancient woodland on Muswell Hill Road, this charming community eco-café features an organic garden, wholesome homemade meals, children's activities, and a calm, nature-filled setting.\n4. Lauderdale House Café – Located inside historic Lauderdale House in Waterlow Park, providing homemade treats, hot drinks, light lunches, and an open terrace right beside the park lawns and play spaces.\n5. The Flask – A classic 17th-century Highgate pub that welcomes families with a dedicated children's menu, high chairs, and a large heated courtyard terrace.",
+          "providers": {
+            "openai": {
+              "status": "tested",
+              "mentioned": false,
+              "answer_text": "Here are some family-friendly restaurants and cafés in Highgate, London, UK:",
+              "tested_at": "2026-10-13T15:10:54.410Z",
+              "recommended_competitors": [
+                "The Flask",
+                "Café Boulangerie",
+                "The Highgate Society Café",
+                "The Bull & Last",
+                "Lauderdale House Café"
+              ]
+            },
+            "anthropic": {
+              "status": "tested",
+              "mentioned": false,
+              "answer_text": "Here are some excellent family-friendly restaurants and cafés in Highgate, London where you can enjoy meals with children in a welcoming atmosphere.",
+              "tested_at": "2026-10-13T15:10:54.040Z",
+              "recommended_competitors": [
+                "The Flask",
+                "Highgate Wood Café",
+                "Café Rouge",
+                "The Woodman",
+                "Tossed"
+              ]
+            },
+            "gemini": {
+              "query": "family friendly restaurants and cafés in Highgate, London, UK",
+              "status": "tested",
+              "mentioned": false,
+              "rank": null,
+              "answer_text": "Highgate offers excellent family-friendly dining spots, ranging from woodland park cafés to cosy village gastropubs with spacious gardens. Here are the top recommendations:\n\n1. The Red Lion & Sun – An acclaimed Highgate Village gastropub with a relaxed atmosphere, a dedicated kids' menu, high chairs, buggy accessibility, and two spacious beer gardens perfect for families.\n2. The Pavilion Café (Highgate Wood) – Situated right next to the children's adventure playground and nature trails in Highgate Wood, offering fresh pastries, light lunches, ice creams, and plenty of outdoor seating.\n3. Queen's Wood Cafe – Tucked inside ancient woodland on Muswell Hill Road, this charming community eco-café features an organic garden, wholesome homemade meals, children's activities, and a calm, nature-filled setting.\n4. Lauderdale House Café – Located inside historic Lauderdale House in Waterlow Park, providing homemade treats, hot drinks, light lunches, and an open terrace right beside the park lawns and play spaces.\n5. The Flask – A classic 17th-century Highgate pub that welcomes families with a dedicated children's menu, high chairs, and a large heated courtyard terrace.",
+              "verbatim_answer": "Highgate offers excellent family-friendly dining spots, ranging from woodland park cafés to cosy village gastropubs with spacious gardens. Here are the top recommendations:\n\n1. The Red Lion & Sun – An acclaimed Highgate Village gastropub with a relaxed atmosphere, a dedicated kids' menu, high chairs, buggy accessibility, and two spacious beer gardens perfect for families.\n2. The Pavilion Café (Highgate Wood) – Situated right next to the children's adventure playground and nature trails in Highgate Wood, offering fresh pastries, light lunches, ice creams, and plenty of outdoor seating.\n3. Queen's Wood Cafe – Tucked inside ancient woodland on Muswell Hill Road, this charming community eco-café features an organic garden, wholesome homemade meals, children's activities, and a calm, nature-filled setting.\n4. Lauderdale House Café – Located inside historic Lauderdale House in Waterlow Park, providing homemade treats, hot drinks, light lunches, and an open terrace right beside the park lawns and play spaces.\n5. The Flask – A classic 17th-century Highgate pub that welcomes families with a dedicated children's menu, high chairs, and a large heated courtyard terrace.",
+              "tested_at": "2026-10-13T15:10:42.222Z",
+              "recommended_competitors": [
+                "The Red Lion & Sun",
+                "The Pavilion Café (Highgate Wood)",
+                "Queen's Wood Cafe",
+                "Lauderdale House Café",
+                "The Flask"
+              ],
+              "failure_reason": null
+            }
+          },
+          "tested_at": "2026-10-13T15:10:42.222Z",
+          "recommended_competitors": [
+            "The Flask",
+            "Café Boulangerie",
+            "The Highgate Society Café",
+            "The Bull & Last",
+            "Lauderdale House Café",
+            "Highgate Wood Café",
+            "Café Rouge",
+            "The Woodman",
+            "Tossed",
+            "The Red Lion & Sun",
+            "The Pavilion Café (Highgate Wood)",
+            "Queen's Wood Cafe"
+          ]
+        },
+        {
+          "query": "date night restaurants and cafés in Highgate, London, UK",
+          "status": "tested",
+          "mentioned": false,
+          "rank": null,
+          "answer_text": "Highgate is one of London's most picturesque and romantic hilltop villages, perfect for a cozy, memorable date night or daytime café rendezvous. Here are the top five recommended spots:\n\n1. The Red Lion & Sun: Widely celebrated as one of London's premier gastropubs, this spot pairs an exceptional, ever-changing seasonal British menu with one of the finest curated wine lists in the capital. The log fires in winter and fairy-lit covered garden in warmer months create an effortlessly romantic setting.\n\n2. The Flask: Steeped in 17th-century history, The Flask is quintessential Highgate charm. With its low-beamed ceilings, hidden snugs, flickering candlelit corners, and elevated pub dining, it offers an intimate, classic atmosphere ideal for drinks and dinner.\n\n3. Fabrizio: A beloved, intimate family-run Italian restaurant on Highgate Hill. Renowned for its warm hospitality, authentic handmade pastas, and wood-fired pizzas, Fabrizio delivers a lively, heartwarming Italian date night experience.\n\n4. The Gatehouse: Combining relaxed dining with cultural charm, The Gatehouse serves delicious British and Spanish-influenced dishes and tapas. It is also home to the renowned Upstairs at the Gatehouse fringe theatre, making it the ultimate destination for dinner and a show.\n\n5. Queen's Wood Café: If your date idea leans toward a romantic daytime stroll, this fairytale wooden cabin cafe nestled directly in ancient woodland is unmatched. Surrounded by greenery and serving artisanal coffees, teas, and homemade cakes, it feels like an enchanting escape from city life.",
+          "verbatim_answer": "Highgate is one of London's most picturesque and romantic hilltop villages, perfect for a cozy, memorable date night or daytime café rendezvous. Here are the top five recommended spots:\n\n1. The Red Lion & Sun: Widely celebrated as one of London's premier gastropubs, this spot pairs an exceptional, ever-changing seasonal British menu with one of the finest curated wine lists in the capital. The log fires in winter and fairy-lit covered garden in warmer months create an effortlessly romantic setting.\n\n2. The Flask: Steeped in 17th-century history, The Flask is quintessential Highgate charm. With its low-beamed ceilings, hidden snugs, flickering candlelit corners, and elevated pub dining, it offers an intimate, classic atmosphere ideal for drinks and dinner.\n\n3. Fabrizio: A beloved, intimate family-run Italian restaurant on Highgate Hill. Renowned for its warm hospitality, authentic handmade pastas, and wood-fired pizzas, Fabrizio delivers a lively, heartwarming Italian date night experience.\n\n4. The Gatehouse: Combining relaxed dining with cultural charm, The Gatehouse serves delicious British and Spanish-influenced dishes and tapas. It is also home to the renowned Upstairs at the Gatehouse fringe theatre, making it the ultimate destination for dinner and a show.\n\n5. Queen's Wood Café: If your date idea leans toward a romantic daytime stroll, this fairytale wooden cabin cafe nestled directly in ancient woodland is unmatched. Surrounded by greenery and serving artisanal coffees, teas, and homemade cakes, it feels like an enchanting escape from city life.",
+          "providers": {
+            "openai": {
+              "status": "tested",
+              "mentioned": false,
+              "answer_text": "Here are some great options for date night restaurants and cafés in Highgate, London:",
+              "tested_at": "2026-10-13T15:10:54.977Z",
+              "recommended_competitors": [
+                "The Bull",
+                "Lauderdale House",
+                "The Flask",
+                "Café Boulangerie",
+                "The Gatehouse"
+              ]
+            },
+            "anthropic": {
+              "status": "tested",
+              "mentioned": false,
+              "answer_text": "Here are some excellent date night restaurants and cafés in Highgate, London where you can enjoy a romantic evening or casual meal together.",
+              "tested_at": "2026-10-13T15:10:55.288Z",
+              "recommended_competitors": [
+                "The Flask",
+                "Osteria Tufo",
+                "Highgate Deli",
+                "The Woodman",
+                "Café Noto"
+              ]
+            },
+            "gemini": {
+              "query": "date night restaurants and cafés in Highgate, London, UK",
+              "status": "tested",
+              "mentioned": false,
+              "rank": null,
+              "answer_text": "Highgate is one of London's most picturesque and romantic hilltop villages, perfect for a cozy, memorable date night or daytime café rendezvous. Here are the top five recommended spots:\n\n1. The Red Lion & Sun: Widely celebrated as one of London's premier gastropubs, this spot pairs an exceptional, ever-changing seasonal British menu with one of the finest curated wine lists in the capital. The log fires in winter and fairy-lit covered garden in warmer months create an effortlessly romantic setting.\n\n2. The Flask: Steeped in 17th-century history, The Flask is quintessential Highgate charm. With its low-beamed ceilings, hidden snugs, flickering candlelit corners, and elevated pub dining, it offers an intimate, classic atmosphere ideal for drinks and dinner.\n\n3. Fabrizio: A beloved, intimate family-run Italian restaurant on Highgate Hill. Renowned for its warm hospitality, authentic handmade pastas, and wood-fired pizzas, Fabrizio delivers a lively, heartwarming Italian date night experience.\n\n4. The Gatehouse: Combining relaxed dining with cultural charm, The Gatehouse serves delicious British and Spanish-influenced dishes and tapas. It is also home to the renowned Upstairs at the Gatehouse fringe theatre, making it the ultimate destination for dinner and a show.\n\n5. Queen's Wood Café: If your date idea leans toward a romantic daytime stroll, this fairytale wooden cabin cafe nestled directly in ancient woodland is unmatched. Surrounded by greenery and serving artisanal coffees, teas, and homemade cakes, it feels like an enchanting escape from city life.",
+              "verbatim_answer": "Highgate is one of London's most picturesque and romantic hilltop villages, perfect for a cozy, memorable date night or daytime café rendezvous. Here are the top five recommended spots:\n\n1. The Red Lion & Sun: Widely celebrated as one of London's premier gastropubs, this spot pairs an exceptional, ever-changing seasonal British menu with one of the finest curated wine lists in the capital. The log fires in winter and fairy-lit covered garden in warmer months create an effortlessly romantic setting.\n\n2. The Flask: Steeped in 17th-century history, The Flask is quintessential Highgate charm. With its low-beamed ceilings, hidden snugs, flickering candlelit corners, and elevated pub dining, it offers an intimate, classic atmosphere ideal for drinks and dinner.\n\n3. Fabrizio: A beloved, intimate family-run Italian restaurant on Highgate Hill. Renowned for its warm hospitality, authentic handmade pastas, and wood-fired pizzas, Fabrizio delivers a lively, heartwarming Italian date night experience.\n\n4. The Gatehouse: Combining relaxed dining with cultural charm, The Gatehouse serves delicious British and Spanish-influenced dishes and tapas. It is also home to the renowned Upstairs at the Gatehouse fringe theatre, making it the ultimate destination for dinner and a show.\n\n5. Queen's Wood Café: If your date idea leans toward a romantic daytime stroll, this fairytale wooden cabin cafe nestled directly in ancient woodland is unmatched. Surrounded by greenery and serving artisanal coffees, teas, and homemade cakes, it feels like an enchanting escape from city life.",
+              "tested_at": "2026-10-13T15:10:45.728Z",
+              "recommended_competitors": [
+                "The Red Lion & Sun",
+                "The Flask",
+                "Fabrizio",
+                "The Gatehouse",
+                "Queen's Wood Café"
+              ],
+              "failure_reason": null
+            }
+          },
+          "tested_at": "2026-10-13T15:10:45.728Z",
+          "recommended_competitors": [
+            "The Bull",
+            "Lauderdale House",
+            "The Flask",
+            "Café Boulangerie",
+            "The Gatehouse",
+            "Osteria Tufo",
+            "Highgate Deli",
+            "The Woodman",
+            "Café Noto",
+            "The Red Lion & Sun",
+            "Fabrizio",
+            "Queen's Wood Café"
+          ]
+        },
+        {
+          "query": "restaurants and cafés open now in Highgate, London, UK",
+          "status": "tested",
+          "mentioned": false,
+          "rank": null,
+          "answer_text": "Here are top-rated restaurants and cafés to visit in Highgate, London: The Flask offers classic gastropub dining and drinks in a historic 17th-century setting; The Red Lion & Sun serves award-winning British food alongside an exceptional wine list; GAIL's Bakery Highgate provides artisan coffees, fresh pastries, and light savory bites; Queen's Wood Café offers organic dishes and refreshments tucked away in peaceful woodland; and Archie's on Highgate Hill is a lively local favourite for brunch, specialty coffee, and lunch.",
+          "verbatim_answer": "Here are top-rated restaurants and cafés to visit in Highgate, London: The Flask offers classic gastropub dining and drinks in a historic 17th-century setting; The Red Lion & Sun serves award-winning British food alongside an exceptional wine list; GAIL's Bakery Highgate provides artisan coffees, fresh pastries, and light savory bites; Queen's Wood Café offers organic dishes and refreshments tucked away in peaceful woodland; and Archie's on Highgate Hill is a lively local favourite for brunch, specialty coffee, and lunch.",
+          "providers": {
+            "openai": {
+              "status": "tested",
+              "mentioned": false,
+              "answer_text": "Here are some restaurants and cafés open now in Highgate, London, UK:",
+              "tested_at": "2026-10-13T15:10:56.214Z",
+              "recommended_competitors": [
+                "The Flask",
+                "Café Boulangerie",
+                "The Highgate Village Café",
+                "Lauderdale House",
+                "The Bull"
+              ]
+            },
+            "anthropic": {
+              "status": "tested",
+              "mentioned": false,
+              "answer_text": "Here are some popular restaurants and cafés in Highgate, London. Please note that opening hours vary by day and season, so I recommend checking their websites or calling ahead to confirm they're open now.",
+              "tested_at": "2026-10-13T15:10:56.432Z",
+              "recommended_competitors": [
+                "The Flask",
+                "Highgate Deli",
+                "Café Noto",
+                "The Woodman",
+                "Stag Bakery"
+              ]
+            },
+            "gemini": {
+              "query": "restaurants and cafés open now in Highgate, London, UK",
+              "status": "tested",
+              "mentioned": false,
+              "rank": null,
+              "answer_text": "Here are top-rated restaurants and cafés to visit in Highgate, London: The Flask offers classic gastropub dining and drinks in a historic 17th-century setting; The Red Lion & Sun serves award-winning British food alongside an exceptional wine list; GAIL's Bakery Highgate provides artisan coffees, fresh pastries, and light savory bites; Queen's Wood Café offers organic dishes and refreshments tucked away in peaceful woodland; and Archie's on Highgate Hill is a lively local favourite for brunch, specialty coffee, and lunch.",
+              "verbatim_answer": "Here are top-rated restaurants and cafés to visit in Highgate, London: The Flask offers classic gastropub dining and drinks in a historic 17th-century setting; The Red Lion & Sun serves award-winning British food alongside an exceptional wine list; GAIL's Bakery Highgate provides artisan coffees, fresh pastries, and light savory bites; Queen's Wood Café offers organic dishes and refreshments tucked away in peaceful woodland; and Archie's on Highgate Hill is a lively local favourite for brunch, specialty coffee, and lunch.",
+              "tested_at": "2026-10-13T15:10:35.607Z",
+              "recommended_competitors": [
+                "The Flask",
+                "The Red Lion & Sun",
+                "GAIL's Bakery Highgate",
+                "Queen's Wood Café",
+                "Archie's"
+              ],
+              "failure_reason": null
+            }
+          },
+          "tested_at": "2026-10-13T15:10:35.607Z",
+          "recommended_competitors": [
+            "The Flask",
+            "Café Boulangerie",
+            "The Highgate Village Café",
+            "Lauderdale House",
+            "The Bull",
+            "Highgate Deli",
+            "Café Noto",
+            "The Woodman",
+            "Stag Bakery",
+            "The Red Lion & Sun",
+            "GAIL's Bakery Highgate",
+            "Queen's Wood Café",
+            "Archie's"
+          ]
+        },
+        {
+          "query": "local restaurants and cafés in Highgate, London, UK",
+          "status": "tested",
+          "mentioned": false,
+          "rank": null,
+          "answer_text": "Highgate boasts an exceptional dining scene defined by historic village gastropubs and charming neighbourhood cafés. The Red Lion & Sun is a critically acclaimed gastropub famous for its seasonal modern British menu, stellar wine list, and Sunday roasts. The Flask provides quintessential 18th-century village tavern atmosphere alongside elevated pub classics. For sweets and a pot of tea, High Tea of Highgate is a beloved independent tearoom offering freshly baked cakes and traditional afternoon tea. The Food Room, situated near Highgate Station, is a local favourite for hearty breakfasts, brunch sandwiches, and artisan coffee. Finally, Queen's Wood Café serves wholesome organic food and drinks in an idyllic woodland setting.",
+          "verbatim_answer": "Highgate boasts an exceptional dining scene defined by historic village gastropubs and charming neighbourhood cafés. The Red Lion & Sun is a critically acclaimed gastropub famous for its seasonal modern British menu, stellar wine list, and Sunday roasts. The Flask provides quintessential 18th-century village tavern atmosphere alongside elevated pub classics. For sweets and a pot of tea, High Tea of Highgate is a beloved independent tearoom offering freshly baked cakes and traditional afternoon tea. The Food Room, situated near Highgate Station, is a local favourite for hearty breakfasts, brunch sandwiches, and artisan coffee. Finally, Queen's Wood Café serves wholesome organic food and drinks in an idyllic woodland setting.",
+          "providers": {
+            "openai": {
+              "status": "tested",
+              "mentioned": false,
+              "answer_text": "Here are some local restaurants and cafés in Highgate, London, UK that you might enjoy:",
+              "tested_at": "2026-10-13T15:10:57.120Z",
+              "recommended_competitors": [
+                "The Flask",
+                "Café Boulangerie",
+                "The Highgate Village Café",
+                "Lauderdale House",
+                "The Gatehouse"
+              ]
+            },
+            "anthropic": {
+              "status": "tested",
+              "mentioned": false,
+              "answer_text": "Here are some excellent local restaurants and cafés in Highgate, London that offer a variety of dining experiences from casual coffee spots to fine dining.",
+              "tested_at": "2026-10-13T15:10:56.994Z",
+              "recommended_competitors": [
+                "The Flask",
+                "Café Noto",
+                "The Woodman",
+                "Highgate Deli",
+                "Tossed"
+              ]
+            },
+            "gemini": {
+              "query": "local restaurants and cafés in Highgate, London, UK",
+              "status": "tested",
+              "mentioned": false,
+              "rank": null,
+              "answer_text": "Highgate boasts an exceptional dining scene defined by historic village gastropubs and charming neighbourhood cafés. The Red Lion & Sun is a critically acclaimed gastropub famous for its seasonal modern British menu, stellar wine list, and Sunday roasts. The Flask provides quintessential 18th-century village tavern atmosphere alongside elevated pub classics. For sweets and a pot of tea, High Tea of Highgate is a beloved independent tearoom offering freshly baked cakes and traditional afternoon tea. The Food Room, situated near Highgate Station, is a local favourite for hearty breakfasts, brunch sandwiches, and artisan coffee. Finally, Queen's Wood Café serves wholesome organic food and drinks in an idyllic woodland setting.",
+              "verbatim_answer": "Highgate boasts an exceptional dining scene defined by historic village gastropubs and charming neighbourhood cafés. The Red Lion & Sun is a critically acclaimed gastropub famous for its seasonal modern British menu, stellar wine list, and Sunday roasts. The Flask provides quintessential 18th-century village tavern atmosphere alongside elevated pub classics. For sweets and a pot of tea, High Tea of Highgate is a beloved independent tearoom offering freshly baked cakes and traditional afternoon tea. The Food Room, situated near Highgate Station, is a local favourite for hearty breakfasts, brunch sandwiches, and artisan coffee. Finally, Queen's Wood Café serves wholesome organic food and drinks in an idyllic woodland setting.",
+              "tested_at": "2026-10-13T15:10:43.459Z",
+              "recommended_competitors": [
+                "The Red Lion & Sun",
+                "The Flask",
+                "High Tea of Highgate",
+                "The Food Room",
+                "Queen's Wood Café"
+              ],
+              "failure_reason": null
+            }
+          },
+          "tested_at": "2026-10-13T15:10:43.459Z",
+          "recommended_competitors": [
+            "The Flask",
+            "Café Boulangerie",
+            "The Highgate Village Café",
+            "Lauderdale House",
+            "The Gatehouse",
+            "Café Noto",
+            "The Woodman",
+            "Highgate Deli",
+            "Tossed",
+            "The Red Lion & Sun",
+            "High Tea of Highgate",
+            "The Food Room",
+            "Queen's Wood Café"
+          ]
+        },
+        {
+          "query": "where should I go for restaurants and cafés in Highgate, London, UK",
+          "status": "tested",
+          "mentioned": false,
+          "rank": null,
+          "answer_text": "Highgate boasts an exceptional selection of gastropubs, neighborhood restaurants, and charming cafés. For dining, The Red Lion & Sun is an award-winning village pub renowned for exceptional seasonal food, seafood, and Sunday roasts. Ostuni offers authentic southern Italian and Pugliese cooking in a stylish setting, while The Bull & Last on the edge of Hampstead Heath is celebrated for refined British pub cuisine. For coffee and daytime fare, Archie's on Highgate Hill is a local favorite for specialty coffee and brunch dishes, and High Tea of Highgate in the village center provides a classic tea-room experience with loose-leaf teas, warm scones, and cakes.",
+          "verbatim_answer": "Highgate boasts an exceptional selection of gastropubs, neighborhood restaurants, and charming cafés. For dining, The Red Lion & Sun is an award-winning village pub renowned for exceptional seasonal food, seafood, and Sunday roasts. Ostuni offers authentic southern Italian and Pugliese cooking in a stylish setting, while The Bull & Last on the edge of Hampstead Heath is celebrated for refined British pub cuisine. For coffee and daytime fare, Archie's on Highgate Hill is a local favorite for specialty coffee and brunch dishes, and High Tea of Highgate in the village center provides a classic tea-room experience with loose-leaf teas, warm scones, and cakes.",
+          "providers": {
+            "openai": {
+              "status": "tested",
+              "mentioned": false,
+              "answer_text": "Here are some great restaurants and cafés in Highgate, London, UK:",
+              "tested_at": "2026-10-13T15:10:56.804Z",
+              "recommended_competitors": [
+                "The Flask",
+                "Café Boulangerie",
+                "The Bull",
+                "Highgate Village Café",
+                "Lauderdale House"
+              ]
+            },
+            "anthropic": {
+              "status": "tested",
+              "mentioned": false,
+              "answer_text": "Highgate has a wonderful selection of restaurants and cafés. Here are some excellent options to consider: Café Nero and Pret A Manger offer quick coffee and light bites, while The Flask pub serves traditional British fare in a historic setting. For dining, you'll find diverse options ranging from casual to upscale establishments in the village area.",
+              "tested_at": "2026-10-13T15:10:57.696Z",
+              "recommended_competitors": [
+                "The Flask",
+                "Café Nero",
+                "Pret A Manger",
+                "Highgate Deli",
+                "The Woodman"
+              ]
+            },
+            "gemini": {
+              "query": "where should I go for restaurants and cafés in Highgate, London, UK",
+              "status": "tested",
+              "mentioned": false,
+              "rank": null,
+              "answer_text": "Highgate boasts an exceptional selection of gastropubs, neighborhood restaurants, and charming cafés. For dining, The Red Lion & Sun is an award-winning village pub renowned for exceptional seasonal food, seafood, and Sunday roasts. Ostuni offers authentic southern Italian and Pugliese cooking in a stylish setting, while The Bull & Last on the edge of Hampstead Heath is celebrated for refined British pub cuisine. For coffee and daytime fare, Archie's on Highgate Hill is a local favorite for specialty coffee and brunch dishes, and High Tea of Highgate in the village center provides a classic tea-room experience with loose-leaf teas, warm scones, and cakes.",
+              "verbatim_answer": "Highgate boasts an exceptional selection of gastropubs, neighborhood restaurants, and charming cafés. For dining, The Red Lion & Sun is an award-winning village pub renowned for exceptional seasonal food, seafood, and Sunday roasts. Ostuni offers authentic southern Italian and Pugliese cooking in a stylish setting, while The Bull & Last on the edge of Hampstead Heath is celebrated for refined British pub cuisine. For coffee and daytime fare, Archie's on Highgate Hill is a local favorite for specialty coffee and brunch dishes, and High Tea of Highgate in the village center provides a classic tea-room experience with loose-leaf teas, warm scones, and cakes.",
+              "tested_at": "2026-10-13T15:10:42.935Z",
+              "recommended_competitors": [
+                "The Red Lion & Sun",
+                "Ostuni",
+                "Archie's",
+                "High Tea of Highgate",
+                "The Bull & Last"
+              ],
+              "failure_reason": null
+            }
+          },
+          "tested_at": "2026-10-13T15:10:42.935Z",
+          "recommended_competitors": [
+            "The Flask",
+            "Café Boulangerie",
+            "The Bull",
+            "Highgate Village Café",
+            "Lauderdale House",
+            "Café Nero",
+            "Pret A Manger",
+            "Highgate Deli",
+            "The Woodman",
+            "The Red Lion & Sun",
+            "Ostuni",
+            "Archie's",
+            "High Tea of Highgate",
+            "The Bull & Last"
+          ]
+        }
+      ],
+      "competitors": [
+        "The Flask",
+        "Café Boulangerie",
+        "The Highgate Society Café",
+        "Lauderdale House",
+        "The Gatehouse",
+        "Café Noto",
+        "The Woodman",
+        "Highgate Deli",
+        "Osteria Tufo",
+        "The Red Lion & Sun",
+        "The Bull & Last",
+        "Fabrizio Restaurant",
+        "Archie's",
+        "Café Hampstead",
+        "The Gate Restaurant",
+        "Queen's Wood Café",
+        "The Bull",
+        "The Highgate Village Café",
+        "Ostuni",
+        "High Tea of Highgate",
+        "Lauderdale House Café",
+        "Tally Ho! Toby Waterworth",
+        "The Food Room",
+        "Vanilla Cafe",
+        "Margot Bakery",
+        "Tutti Frutti",
+        "Highgate Wood Café",
+        "Café Rouge",
+        "Tossed",
+        "The Pavilion Café (Highgate Wood)",
+        "Queen's Wood Cafe",
+        "Fabrizio",
+        "Stag Bakery",
+        "GAIL's Bakery Highgate",
+        "Highgate Village Café",
+        "Café Nero",
+        "Pret A Manger"
+      ]
+    }
+  ]
+}

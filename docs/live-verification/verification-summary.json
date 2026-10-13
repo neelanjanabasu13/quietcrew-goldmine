@@ -1,0 +1,54 @@
+{
+  "run_id": "run_4jc9ltbmwm9",
+  "status": "complete",
+  "started_at": "2026-10-13T15:10:18.774Z",
+  "finished_at": "2026-10-13T15:10:57.742Z",
+  "total_duration_sec": 38.96,
+  "discovery": {
+    "source": "Google Places Text Search",
+    "query": "Restaurants and caf\u00e9s in Highgate, London, UK | local Restaurants and caf\u00e9s in Highgate, London, UK | independent Restaurants and caf\u00e9s in Highgate, London, UK",
+    "query_variants": [
+      "Restaurants and caf\u00e9s in Highgate, London, UK",
+      "local Restaurants and caf\u00e9s in Highgate, London, UK",
+      "independent Restaurants and caf\u00e9s in Highgate, London, UK"
+    ],
+    "query_variants_completed": 3,
+    "candidates_returned": 52,
+    "qualified_candidates": 51,
+    "brand_verified_candidates": 0,
+    "analysis_candidates": 45,
+    "outreach_eligible_candidates": 0,
+    "excluded_multi_location_candidates": 6,
+    "scope": "Highgate, London, UK",
+    "market_coverage": "candidate_cohort_not_market_census",
+    "candidates_found": 52,
+    "candidates_qualified": 51,
+    "analysis_cap": 50
+  },
+  "businesses": 45,
+  "websites": 35,
+  "reviews": 0,
+  "review_statuses": {
+    "not_returned": 45
+  },
+  "provider_checks": {
+    "gemini": {
+      "status": "tested",
+      "mentions": 0,
+      "total": 10,
+      "visibility": 0
+    },
+    "openai": {
+      "status": "tested",
+      "mentions": 0,
+      "total": 10,
+      "visibility": 0
+    },
+    "anthropic": {
+      "status": "tested",
+      "mentions": 0,
+      "total": 10,
+      "visibility": 0
+    }
+  }
+}

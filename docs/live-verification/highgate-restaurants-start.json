@@ -1,0 +1,27 @@
+{
+  "run_id": "run_4jc9ltbmwm9",
+  "category": "Restaurants and cafés",
+  "location": "Highgate, London, UK",
+  "services": "SEO, websites and AI visibility",
+  "status": "running",
+  "stage": "discovering",
+  "stage_status": {
+    "discovering": "running",
+    "qualifying": "pending",
+    "auditing": "not_implemented",
+    "testing": "not_implemented",
+    "comparing": "not_implemented",
+    "complete": "not_implemented"
+  },
+  "stage_counts": {},
+  "unmatched_names": [],
+  "started_at": "2026-10-13T15:10:18.774Z",
+  "finished_at": null,
+  "results": [],
+  "discovery": {
+    "candidates_found": null,
+    "candidates_qualified": null,
+    "query_variants": [],
+    "analysis_cap": 50
+  }
+}
