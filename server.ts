@@ -1,3 +1,4 @@
+import { matchesDiscoveryArea } from "./discovery-area.mjs";
 import { selectAnalysisCohort, serializeRun, serializeBusiness, compactRunEvidence, expandRunEvidence, createRequestLimiter, fetchWithRetry } from "./scan-contract.mjs";
 import { engineAuth } from "./engine-auth.mjs";
 import { partialOutreach } from "./partial-outreach.mjs";
@@ -1267,7 +1268,7 @@ async function discoverPlacesCohort(category: string, location: string): Promise
     completedQueries++;
     for (const place of attempt.value) {
       const placeId = String(place?.id || "");
-      if (placeId && !byPlaceId.has(placeId)) byPlaceId.set(placeId, place);
+      if (placeId && matchesDiscoveryArea(place, location) && !byPlaceId.has(placeId)) byPlaceId.set(placeId, place);
     }
   }
 
