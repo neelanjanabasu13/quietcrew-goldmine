@@ -1,3 +1,4 @@
+import { categorySearches, matchesCategory, recommendationTerm, supportedCategories } from "./discovery-category.mjs";
 import { areaLabel, containsLocation, matchesLegacyArea, nearbyAreas, resolveAreaRectangle, widenRectangle } from "./discovery-area.mjs";
 import { selectAnalysisCohort, serializeRun, serializeBusiness, compactRunEvidence, expandRunEvidence, createRequestLimiter, fetchWithRetry } from "./scan-contract.mjs";
 import { engineAuth } from "./engine-auth.mjs";
@@ -23,7 +24,7 @@ app.use("/api", engineAuth({ token: process.env.GOLDMINE_ENGINE_TOKEN, productio
 const MODEL = process.env.GEMINI_MODEL || "gemini-3.7-flash";
 const FALLBACK_MODELS = [MODEL, "gemini-3.7-flash", "gemini-3.1-flash-lite", "gemini-flash-latest"];
 const CUSTOMER_QUERY_COUNT = 10;
-const QUERY_SET_VERSION = 3;
+const QUERY_SET_VERSION = 4;
 const MAX_AUDIT_CANDIDATES = Math.max(30, Math.min(50, Number(process.env.MAX_ANALYSIS_CANDIDATES) || 50));
 // Brand verification remains separate from the larger analysis cohort so a
 // chain exclusion does not leave a local market with an artificially tiny
@@ -37,7 +38,6 @@ const PLACES_REQUEST_TIMEOUT_MS = Math.max(1_000, Number(process.env.PLACES_REQU
 // Follow available pages from each discovery lens; the HTTP request returns
 // before discovery begins and clients poll for progress.
 const PLACES_MAX_PAGES = Math.max(1, Math.min(3, Number(process.env.PLACES_MAX_PAGES) || 3));
-const DISCOVERY_QUERY_VARIANTS = 3;
 
 function hasMeasuredAiVisibility(business: any): boolean {
   return Number(business?.ai?.total || 0) > 0
@@ -65,7 +65,6 @@ type VisibilityProvider = "gemini" | "openai" | "anthropic";
 const openaiLimiter = createRequestLimiter(3, 250);
 const anthropicLimiter = createRequestLimiter(3, 250);
 const geminiLimiter = createRequestLimiter(GROUNDING_QUERY_CONCURRENCY, 100);
-const placesDetailsLimiter = createRequestLimiter(5, 100);
 
 async function callOpenAIVisibility(prompt: string): Promise<string> {
   const key = process.env.OPENAI_API_KEY;
@@ -554,48 +553,6 @@ function truncateAtWordBoundary(text: string, maxLen = 240): string {
   return slice.trim() + "...";
 }
 
-function extractTopReview(reviews: any[]): { text: string; rating: number; author: string; relative_time: string } | null {
-  if (!Array.isArray(reviews) || reviews.length === 0) return null;
-
-  let bestReview: any = null;
-  for (const r of reviews) {
-    if (!r) continue;
-    const rRating = Number(r.rating || 0);
-    if (!bestReview) {
-      bestReview = r;
-      continue;
-    }
-    const bestRating = Number(bestReview.rating || 0);
-    if (rRating > bestRating) {
-      bestReview = r;
-    } else if (rRating === bestRating) {
-      const rText = typeof r.text === "object" ? String(r.text?.text || "") : String(r.text || "");
-      const bestText = typeof bestReview.text === "object" ? String(bestReview.text?.text || "") : String(bestReview.text || "");
-      if (rText.length > bestText.length) {
-        bestReview = r;
-      }
-    }
-  }
-
-  if (!bestReview) return null;
-  const rawText = typeof bestReview.text === "object" ? String(bestReview.text?.text || "") : String(bestReview.text || "");
-  const author =
-    typeof bestReview.authorAttribution === "object"
-      ? String(bestReview.authorAttribution?.displayName || "Customer")
-      : String(bestReview.author || "Customer");
-  const relativeTime = String(bestReview.relativePublishTimeDescription || bestReview.publishTime || "");
-  const rating = Number(bestReview.rating || 0);
-
-  if (!rawText && !author) return null;
-
-  return {
-    text: rawText,
-    rating,
-    author,
-    relative_time: relativeTime,
-  };
-}
-
 // -------------------------------------------------------------
 // Contact Discovery (Homepage + /contact, /contact-us, /about)
 // -------------------------------------------------------------
@@ -1057,23 +1014,7 @@ async function saveGroundedQuery(
 // -------------------------------------------------------------
 // Constants & Geography
 // -------------------------------------------------------------
-const ALL_CATEGORIES = [
-  "Restaurants and cafés",
-  "Bars and pubs",
-  "Beauty and aesthetics",
-  "Hair",
-  "Fitness",
-  "Dental",
-  "Private healthcare",
-  "Veterinary",
-  "Legal",
-  "Accountancy",
-  "Estate agencies",
-  "Retail",
-  "Home services",
-  "Automotive",
-  "Hospitality",
-];
+const ALL_CATEGORIES = supportedCategories;
 
 const LONDON_BOROUGHS_AND_DISTRICTS = [
   "City of London", "Barking and Dagenham", "Barnet", "Bexley", "Brent", "Bromley",
@@ -1174,14 +1115,9 @@ function computePercentileRanks(values: number[]): number[] {
 // -------------------------------------------------------------
 // Google Places API Pagination
 // -------------------------------------------------------------
-async function fetchPlacesPaginated(category: string, location: string, maxPages = PLACES_MAX_PAGES): Promise<any[]> {
-  const query = location ? `${category} in ${location}` : category;
-  return fetchPlacesTextQuery(query, maxPages);
-}
-
 type SearchRectangle = ReturnType<typeof widenRectangle>;
 
-async function fetchPlacesTextQuery(query: string, maxPages = PLACES_MAX_PAGES, rectangle?: SearchRectangle): Promise<any[]> {
+async function fetchPlacesTextQuery(query: string, maxPages = PLACES_MAX_PAGES, rectangle?: SearchRectangle, includedType?: string): Promise<any[]> {
   const mapsApiKey = process.env.MAPS_API_KEY;
   if (!mapsApiKey) {
     throw new Error("MAPS_API_KEY environment variable is not configured.");
@@ -1192,7 +1128,7 @@ async function fetchPlacesTextQuery(query: string, maxPages = PLACES_MAX_PAGES, 
     "Content-Type": "application/json",
     "X-Goog-Api-Key": mapsApiKey,
     "X-Goog-FieldMask":
-      "places.id,places.displayName,places.rating,places.userRatingCount,places.websiteUri,places.formattedAddress,places.addressComponents,places.reviews,nextPageToken" + (rectangle ? ",places.location" : ""),
+      "places.id,places.displayName,places.rating,places.userRatingCount,places.websiteUri,places.formattedAddress,places.addressComponents,places.types,places.primaryType,nextPageToken" + (rectangle ? ",places.location" : ""),
   };
 
   const collected: any[] = [];
@@ -1201,6 +1137,10 @@ async function fetchPlacesTextQuery(query: string, maxPages = PLACES_MAX_PAGES, 
   for (let pageIdx = 0; pageIdx < maxPages; pageIdx++) {
     const payload: any = { textQuery: query, pageSize: 20 };
     if (rectangle) payload.locationRestriction = { rectangle };
+    if (includedType) {
+      payload.includedType = includedType;
+      payload.strictTypeFiltering = true;
+    }
     if (pageToken) {
       payload.pageToken = pageToken;
     }
@@ -1246,22 +1186,13 @@ async function fetchPlacesTextQuery(query: string, maxPages = PLACES_MAX_PAGES, 
   return collected;
 }
 
-function getDiscoveryQueries(category: string, location: string): string[] {
-  // Places Text Search returns a relevance-ranked candidate set, not a market
-  // database. Combining three transparent lenses produces a broader local
-  // cohort while keeping latency close to a single request (they run in
-  // parallel) and without pretending that one query is a full census.
-  return Array.from(new Set([
-    `${category} in ${location}`,
-    `local ${category} in ${location}`,
-    `independent ${category} in ${location}`,
-  ])).slice(0, DISCOVERY_QUERY_VARIANTS);
-}
-
-async function discoverPlacesCohort(category: string, location: string, rectangle?: SearchRectangle) {
-  const queries = getDiscoveryQueries(category, location);
+async function discoverPlacesCohort(category: string, location: string, rectangle?: SearchRectangle, maxPages = PLACES_MAX_PAGES) {
+  const searches = categorySearches(category, maxPages).map(({ type, term, pages }) => ({
+    query: `${term} in ${location}`, type, pages,
+  }));
+  const queries = searches.map(({ query }) => query);
   const attempts = await Promise.allSettled(
-    queries.map((query) => fetchPlacesTextQuery(query, PLACES_MAX_PAGES, rectangle))
+    searches.map(({ query, pages, type }) => fetchPlacesTextQuery(query, pages, rectangle, type))
   );
   const byPlaceId = new Map<string, any>();
   let completedQueries = 0;
@@ -1271,7 +1202,7 @@ async function discoverPlacesCohort(category: string, location: string, rectangl
     completedQueries++;
     for (const place of attempt.value) {
       const placeId = String(place?.id || "");
-      if (placeId && (rectangle ? containsLocation(rectangle, place.location) : matchesLegacyArea(place, location)) && !byPlaceId.has(placeId)) byPlaceId.set(placeId, place);
+      if (placeId && matchesCategory(place, category) && (rectangle ? containsLocation(rectangle, place.location) : matchesLegacyArea(place, location)) && !byPlaceId.has(placeId)) byPlaceId.set(placeId, place);
     }
   }
 
@@ -1317,9 +1248,9 @@ async function discoverLocalAndNearby(category: string, location: string) {
   if (eligible.length < MAX_AUDIT_CANDIDATES) {
     try {
       const outer = widenRectangle(rectangle);
-      const query = `${category} near ${location}`;
+      const query = `${recommendationTerm(category)} near ${location}`;
       const leads = (await fetchPlacesTextQuery(query, 1, outer))
-        .filter((place) => containsLocation(outer, place.location)
+        .filter((place) => matchesCategory(place, category) && containsLocation(outer, place.location)
           && !containsLocation(rectangle, place.location) && Number(place.userRatingCount) >= 20);
       const possibleAreas = nearbyAreas(leads, location).slice(0, 2);
       for (const scope of possibleAreas) {
@@ -1360,7 +1291,6 @@ function normalizePlace(p: any, category: string, location: string) {
   const website = p.websiteUri ? String(p.websiteUri) : null;
   const rating = Number(p.rating || 0.0);
   const reviewCount = Number(p.userRatingCount || 0);
-  const topReview = extractTopReview(p.reviews);
 
   return {
     place_id: placeId,
@@ -1371,7 +1301,9 @@ function normalizePlace(p: any, category: string, location: string) {
     website,
     rating,
     review_count: reviewCount,
-    top_review: topReview,
+    types: Array.isArray(p.types) ? p.types : [],
+    primaryType: typeof p.primaryType === "string" ? p.primaryType : null,
+    top_review: null,
     contact: null,
     value_estimate: null,
     quality: { rating_pct: 0, volume_pct: 0, score: 0, cohort_size: 0 },
@@ -1392,23 +1324,6 @@ function normalizePlace(p: any, category: string, location: string) {
     outreach: null,
     scanned_at: new Date().toISOString(),
   };
-}
-
-async function enrichPlacesEvidence(business: any): Promise<void> {
-  try {
-    const details: any = await fetchWithRetry(
-      `https://places.googleapis.com/v1/places/${encodeURIComponent(business.place_id)}`,
-      { headers: { "X-Goog-Api-Key": process.env.MAPS_API_KEY || "",
-        "X-Goog-FieldMask": "reviews,websiteUri" } },
-      placesDetailsLimiter, PLACES_REQUEST_TIMEOUT_MS
-    );
-    business.top_review = extractTopReview(details.reviews) || business.top_review;
-    business.website = details.websiteUri || business.website;
-    business.review_evidence_status = business.top_review ? "available" : "not_returned";
-  } catch (error) {
-    business.review_evidence_status = "unavailable";
-    console.warn(`Places details unavailable for ${business.place_id}:`, (error as Error).message);
-  }
 }
 
 const GENERIC_WEBSITE_DOMAINS = new Set([
@@ -1975,9 +1890,9 @@ async function getOrGenerateQueries(category: string, locality: string): Promise
   // These are intentionally visible, repeatable customer intents—not
   // model-invented prompts. This removes a second Gemini request, makes scans
   // comparable over time, and preserves exactly ten queries for every scan.
-  const categoryLabel = category.toLowerCase();
+  const categoryLabel = recommendationTerm(category);
   let queries: string[];
-  if (categoryLabel.includes("veterinary")) {
+  if (category === "Veterinary") {
     queries = [
       `best vets in ${locality}`,
       `top rated veterinary clinic near me in ${locality}`,
@@ -1990,7 +1905,7 @@ async function getOrGenerateQueries(category: string, locality: string): Promise
       `cat vet in ${locality}`,
       `dog vet in ${locality}`,
     ];
-  } else if (categoryLabel.includes("healthcare") || categoryLabel.includes("clinic")) {
+  } else if (category === "Private healthcare") {
     queries = [
       `best private healthcare clinic in ${locality}`,
       `top rated private clinic near me in ${locality}`,
@@ -2003,7 +1918,7 @@ async function getOrGenerateQueries(category: string, locality: string): Promise
       `private clinic open now in ${locality}`,
       `where should I go for private healthcare in ${locality}`,
     ];
-  } else if (categoryLabel.includes("retail")) {
+  } else if (category === "Retail") {
     queries = [
       `best local shops in ${locality}`,
       `top rated independent shops near me in ${locality}`,
@@ -2016,7 +1931,7 @@ async function getOrGenerateQueries(category: string, locality: string): Promise
       `where to shop locally in ${locality}`,
       `local businesses to visit in ${locality}`,
     ];
-  } else if (categoryLabel.includes("restaurant") || categoryLabel.includes("café") || categoryLabel.includes("cafe")) {
+  } else if (category === "Restaurants and cafés") {
     queries = [
       `best ${categoryLabel} in ${locality}`,
       `top rated ${categoryLabel} near me in ${locality}`,
@@ -2146,9 +2061,6 @@ async function runDiscoveryPipeline(
       ...qualified.filter((business) => business.discovery.nearby),
     ], MAX_AUDIT_CANDIDATES);
     const top20 = rankedForVerification;
-    // Text Search can omit review text even when ratings are returned. Fetch
-    // selected-business details explicitly before publishing their evidence.
-    await runWithConcurrency(top20, 5, enrichPlacesEvidence);
     // Count only the deterministic pre-screen exclusions. The following
     // pending state is not an exclusion: it is a deliberate safety lock until
     // selected-business verification has run.
@@ -2850,11 +2762,12 @@ app.get("/api/health", async (req: Request, res: Response) => {
 const handleRunCreation = async (req: Request, res: Response) => {
   const body = req.body || {};
   const category = String(body.category || "Restaurants and cafés").trim();
-  const requestedArea = String(body.location || "").trim();
+  const requestedArea = String(body.location || "");
   const services = String(body.services || "SEO, websites and AI visibility").trim();
   let location: string;
 
   try {
+    recommendationTerm(category);
     const resolvedArea = resolveLondonArea(requestedArea);
     location = resolvedArea.searchScope;
   } catch (err: any) {
@@ -2874,7 +2787,7 @@ const handleRunCreation = async (req: Request, res: Response) => {
   const runDoc = {
     run_id: runId,
     category,
-    location,
+    location: requestedArea,
     services,
     status: "running",
     stage: "discovering",
@@ -3180,7 +3093,7 @@ app.post("/api/seed", (req: Request, res: Response) => {
   setImmediate(async () => {
     for (const cat of ALL_CATEGORIES) {
       try {
-        const rawPlaces = await fetchPlacesPaginated(cat, location, 1);
+        const { places: rawPlaces } = await discoverPlacesCohort(cat, location, undefined, 1);
         for (const p of rawPlaces) {
           const b = normalizePlace(p, cat, location);
           await dbSaveBusiness(b.place_id, b);
