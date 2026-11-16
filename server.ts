@@ -1,4 +1,4 @@
-import { matchesDiscoveryArea } from "./discovery-area.mjs";
+import { areaLabel, containsLocation, matchesLegacyArea, nearbyAreas, resolveAreaRectangle, widenRectangle } from "./discovery-area.mjs";
 import { selectAnalysisCohort, serializeRun, serializeBusiness, compactRunEvidence, expandRunEvidence, createRequestLimiter, fetchWithRetry } from "./scan-contract.mjs";
 import { engineAuth } from "./engine-auth.mjs";
 import { partialOutreach } from "./partial-outreach.mjs";
@@ -1179,7 +1179,9 @@ async function fetchPlacesPaginated(category: string, location: string, maxPages
   return fetchPlacesTextQuery(query, maxPages);
 }
 
-async function fetchPlacesTextQuery(query: string, maxPages = PLACES_MAX_PAGES): Promise<any[]> {
+type SearchRectangle = ReturnType<typeof widenRectangle>;
+
+async function fetchPlacesTextQuery(query: string, maxPages = PLACES_MAX_PAGES, rectangle?: SearchRectangle): Promise<any[]> {
   const mapsApiKey = process.env.MAPS_API_KEY;
   if (!mapsApiKey) {
     throw new Error("MAPS_API_KEY environment variable is not configured.");
@@ -1190,7 +1192,7 @@ async function fetchPlacesTextQuery(query: string, maxPages = PLACES_MAX_PAGES):
     "Content-Type": "application/json",
     "X-Goog-Api-Key": mapsApiKey,
     "X-Goog-FieldMask":
-      "places.id,places.displayName,places.rating,places.userRatingCount,places.websiteUri,places.formattedAddress,places.addressComponents,places.reviews,nextPageToken",
+      "places.id,places.displayName,places.rating,places.userRatingCount,places.websiteUri,places.formattedAddress,places.addressComponents,places.reviews,nextPageToken" + (rectangle ? ",places.location" : ""),
   };
 
   const collected: any[] = [];
@@ -1198,6 +1200,7 @@ async function fetchPlacesTextQuery(query: string, maxPages = PLACES_MAX_PAGES):
   let pageToken: string | undefined = undefined;
   for (let pageIdx = 0; pageIdx < maxPages; pageIdx++) {
     const payload: any = { textQuery: query, pageSize: 20 };
+    if (rectangle) payload.locationRestriction = { rectangle };
     if (pageToken) {
       payload.pageToken = pageToken;
     }
@@ -1255,10 +1258,10 @@ function getDiscoveryQueries(category: string, location: string): string[] {
   ])).slice(0, DISCOVERY_QUERY_VARIANTS);
 }
 
-async function discoverPlacesCohort(category: string, location: string): Promise<{ places: any[]; queries: string[]; completedQueries: number }> {
+async function discoverPlacesCohort(category: string, location: string, rectangle?: SearchRectangle) {
   const queries = getDiscoveryQueries(category, location);
   const attempts = await Promise.allSettled(
-    queries.map((query) => fetchPlacesTextQuery(query, PLACES_MAX_PAGES))
+    queries.map((query) => fetchPlacesTextQuery(query, PLACES_MAX_PAGES, rectangle))
   );
   const byPlaceId = new Map<string, any>();
   let completedQueries = 0;
@@ -1268,7 +1271,7 @@ async function discoverPlacesCohort(category: string, location: string): Promise
     completedQueries++;
     for (const place of attempt.value) {
       const placeId = String(place?.id || "");
-      if (placeId && matchesDiscoveryArea(place, location) && !byPlaceId.has(placeId)) byPlaceId.set(placeId, place);
+      if (placeId && (rectangle ? containsLocation(rectangle, place.location) : matchesLegacyArea(place, location)) && !byPlaceId.has(placeId)) byPlaceId.set(placeId, place);
     }
   }
 
@@ -1277,6 +1280,76 @@ async function discoverPlacesCohort(category: string, location: string): Promise
   }
 
   return { places: [...byPlaceId.values()], queries, completedQueries };
+}
+
+async function geocodeDiscoveryArea(scope: string) {
+  const apiKey = process.env.GOLDMINE_GEOCODING_API_KEY || process.env.MAPS_API_KEY;
+  if (!apiKey) throw new Error("Google Maps API credentials are missing.");
+  const url = new URL("https://maps.googleapis.com/maps/api/geocode/json");
+  url.search = new URLSearchParams({ address: scope, key: apiKey, region: "gb" }).toString();
+  const response = await fetch(url, { signal: AbortSignal.timeout(PLACES_REQUEST_TIMEOUT_MS) });
+  if (!response.ok) throw new Error(`Google Geocoding returned HTTP ${response.status}.`);
+  const data = await response.json();
+  if (data.status !== "OK" && data.status !== "ZERO_RESULTS") {
+    throw new Error(`Google Geocoding returned ${data.status}.`);
+  }
+  return data.results;
+}
+
+async function discoverLocalAndNearby(category: string, location: string) {
+  if (process.env.GOLDMINE_BOUNDED_DISCOVERY !== "true") {
+    const legacy = await discoverPlacesCohort(category, location);
+    return {
+      ...legacy,
+      candidates: legacy.places.map((place) => ({ place, scope: location, nearby: false })),
+      searchedAreas: null,
+    };
+  }
+
+  const rectangle = await resolveAreaRectangle(location, geocodeDiscoveryArea);
+  const core = await discoverPlacesCohort(category, location, rectangle);
+  const businesses = core.places.map((place) => normalizePlace(place, category, location));
+  annotateMultiLocationBrands(businesses);
+  const eligible = businesses.filter((business) => business.review_count >= 20 && business.discovery.outreach_eligible);
+  const searchedAreas = [areaLabel(location)];
+  const candidates = core.places.map((place) => ({ place, scope: location, nearby: false }));
+
+  if (eligible.length < MAX_AUDIT_CANDIDATES) {
+    try {
+      const outer = widenRectangle(rectangle);
+      const query = `${category} near ${location}`;
+      const leads = (await fetchPlacesTextQuery(query, 1, outer))
+        .filter((place) => containsLocation(outer, place.location)
+          && !containsLocation(rectangle, place.location) && Number(place.userRatingCount) >= 20);
+      const possibleAreas = nearbyAreas(leads, location).slice(0, 2);
+      for (const scope of possibleAreas) {
+        let nearbyRectangle: SearchRectangle;
+        try {
+          nearbyRectangle = await resolveAreaRectangle(scope, geocodeDiscoveryArea);
+        } catch (error) {
+          console.warn("Nearby search area could not be verified:", error);
+          continue;
+        }
+        const verified = leads.some((place) => containsLocation(nearbyRectangle, place.location));
+        if (!verified) continue;
+
+        const nearby = await discoverPlacesCohort(category, scope, nearbyRectangle);
+        searchedAreas.push(areaLabel(scope));
+        core.queries.push(query, ...nearby.queries);
+        core.completedQueries += 1 + nearby.completedQueries;
+        const ids = new Set(candidates.map(({ place }) => place.id));
+        for (const place of nearby.places) {
+          if (containsLocation(outer, place.location) && !containsLocation(rectangle, place.location) && !ids.has(place.id)) {
+            candidates.push({ place, scope, nearby: true });
+          }
+        }
+        break;
+      }
+    } catch (error) {
+      console.warn("Nearby discovery failed; keeping the local candidates:", error);
+    }
+  }
+  return { candidates, queries: core.queries, completedQueries: core.completedQueries, searchedAreas };
 }
 
 function normalizePlace(p: any, category: string, location: string) {
@@ -2016,13 +2089,17 @@ async function runDiscoveryPipeline(
     // A Places Text Search is capped at 60 results. The input must therefore
     // be a bounded prospecting area, not an entire city presented as a market.
     requireBoundedLocation(location);
-    const discoveryResponse = await discoverPlacesCohort(category, location);
-    const rawPlaces = discoveryResponse.places;
-    const normalized = rawPlaces.map((p) => normalizePlace(p, category, location));
+    const discoveryResponse = await discoverLocalAndNearby(category, location);
+    const normalized = discoveryResponse.candidates.map(({ place, scope, nearby }) => {
+      const business = normalizePlace(place, category, scope);
+      business.discovery = discoveryResponse.searchedAreas ? { area: areaLabel(scope), ai_scope: scope, nearby } : {};
+      return business;
+    });
     const candidatesCount = normalized.length;
     const discoveryQuery = discoveryResponse.queries.join(" | ");
     for (const business of normalized) {
       business.discovery = {
+        ...business.discovery,
         source: "Google Places Text Search",
         query: discoveryQuery,
         query_variants: discoveryResponse.queries,
@@ -2064,7 +2141,10 @@ async function runDiscoveryPipeline(
     // minutes; that belongs to the selected-business evidence job, not the
     // interactive market scan. Candidates are explicitly not outreach-eligible
     // until that deferred check completes.
-    const rankedForVerification: any[] = selectAnalysisCohort(qualified, MAX_AUDIT_CANDIDATES);
+    const rankedForVerification: any[] = selectAnalysisCohort([
+      ...qualified.filter((business) => !business.discovery.nearby),
+      ...qualified.filter((business) => business.discovery.nearby),
+    ], MAX_AUDIT_CANDIDATES);
     const top20 = rankedForVerification;
     // Text Search can omit review text even when ratings are returned. Fetch
     // selected-business details explicitly before publishing their evidence.
@@ -2130,6 +2210,7 @@ async function runDiscoveryPipeline(
         outreach_eligible_candidates: 0,
         excluded_multi_location_candidates: excludedMultiLocationCount,
         scope: location,
+        ...(discoveryResponse.searchedAreas ? { search_areas: discoveryResponse.searchedAreas } : {}),
         market_coverage: "candidate_cohort_not_market_census",
       },
       results: top20,
@@ -2310,21 +2391,25 @@ async function runDiscoveryPipeline(
     })();
 
     // Task B: Testing AI Discoverability (one scoped query set + Search Grounding)
-    const unmatchedMap: Record<string, number> = {};
+    const unmatchedByArea = new Map<string, Map<string, number>>();
 
     const testingPromise = (async () => {
       const testStart = Date.now();
 
-      // The ten customer queries must measure the exact area the user asked
-      // about. Running a separate ten-query set for every locality returned by
-      // Places both changes the question and explodes latency/cost.
+      const cohorts = new Map<string, typeof top20>();
+      for (const business of top20) {
+        const scope = business.discovery.ai_scope || location;
+        const cohort = cohorts.get(scope) ?? [];
+        cohort.push(business);
+        cohorts.set(scope, cohort);
+      }
       const groups = await runWithConcurrency<[string, typeof top20], {
         loc: string;
         groupBusinesses: typeof top20;
         groupNormalized: Array<{ business: any; tokens: Set<string> }>;
         localityQueries: string[];
       }>(
-        [[location, top20]],
+        [...cohorts],
         4,
         async ([loc, groupBusinesses]) => {
           const localityQueries = await getOrGenerateQueries(category, loc);
@@ -2370,7 +2455,8 @@ async function runDiscoveryPipeline(
         groupBusinesses: typeof top20,
         groupNormalized: Array<{ business: any; tokens: Set<string> }>,
         qIdx: number,
-        result: GroundedQueryResult
+        result: GroundedQueryResult,
+        loc: string
       ) => {
         for (const business of groupBusinesses) {
           const entry = business.ai.queries[qIdx];
@@ -2392,7 +2478,9 @@ async function runDiscoveryPipeline(
           if (bestMatch) {
             if (bestMatch.ai.queries[qIdx].status === "tested") Object.assign(bestMatch.ai.queries[qIdx], { mentioned: true, rank: named.rank || 1 });
           } else {
-            unmatchedMap[rawName] = (unmatchedMap[rawName] || 0) + 1;
+            const names = unmatchedByArea.get(loc) ?? new Map<string, number>();
+            names.set(rawName, (names.get(rawName) ?? 0) + 1);
+            unmatchedByArea.set(loc, names);
           }
         }
       };
@@ -2404,7 +2492,7 @@ async function runDiscoveryPipeline(
             const uncached: Array<{ query: string; qIdx: number }> = [];
 
             cachedResults.forEach((cached, qIdx) => {
-              if (cached) applyGroundedResult(groupBusinesses, groupNormalized, qIdx, cached);
+              if (cached) applyGroundedResult(groupBusinesses, groupNormalized, qIdx, cached, loc);
               else uncached.push({ query: localityQueries[qIdx], qIdx });
             });
             if (uncached.length === 0) return;
@@ -2438,7 +2526,7 @@ async function runDiscoveryPipeline(
                 }
                 const result: GroundedQueryResult = { ...parsedResult, tested_at: new Date().toISOString() };
                 await saveGroundedQuery(category, loc, query, result);
-                applyGroundedResult(groupBusinesses, groupNormalized, qIdx, result);
+                applyGroundedResult(groupBusinesses, groupNormalized, qIdx, result, loc);
                 await dbSaveRun(runId, { results: top20 });
               } catch (err) {
                 console.warn(`Gemini Search Grounding failed for query in ${loc}:`, err);
@@ -2460,12 +2548,12 @@ async function runDiscoveryPipeline(
       // Run the same customer questions through OpenAI and Anthropic as well.
       // Their provider-specific evidence is retained alongside Gemini so the
       // report can show a real three-model comparison.
-      const providerPrompt = (query: string) => `You are answering a customer looking for local businesses in ${location}. Return JSON only: {"answer_text":"your recommendation answer","businesses":[{"name":"business name","rank":1}]}. Recommend up to five real businesses for this exact query. Customer query: ${query}`;
-      await runWithConcurrency(groups, 1, async ({ groupBusinesses, groupNormalized, localityQueries }) => {
+      const providerPrompt = (query: string, loc: string) => `You are answering a customer looking for local businesses in ${loc}. Return JSON only: {"answer_text":"your recommendation answer","businesses":[{"name":"business name","rank":1}]}. Recommend up to five real businesses for this exact query. Customer query: ${query}`;
+      await runWithConcurrency(groups, 1, async ({ loc, groupBusinesses, groupNormalized, localityQueries }) => {
         await runWithConcurrency(localityQueries.map((query, qIdx) => ({ query, qIdx })), 3, async ({ query, qIdx }) => {
           const entryResults = await Promise.allSettled([
-            callOpenAIVisibility(providerPrompt(query)).then((answer) => parseProviderAnswer(answer, query)),
-            callAnthropicVisibility(providerPrompt(query)).then((answer) => parseProviderAnswer(answer, query)),
+            callOpenAIVisibility(providerPrompt(query, loc)).then((answer) => parseProviderAnswer(answer, query)),
+            callAnthropicVisibility(providerPrompt(query, loc)).then((answer) => parseProviderAnswer(answer, query)),
           ]);
           const names = ["openai", "anthropic"] as const;
           entryResults.forEach((result, index) => {
@@ -2547,29 +2635,28 @@ async function runDiscoveryPipeline(
     // Keep the grounded-answer names as evidence, but do not issue an extra
     // Places lookup for every name during a market scan. Those lookups are
     // useful only after somebody opens a specific business report.
-    const unmatchedNamesList = Object.entries(unmatchedMap)
-      .map(([name, count]) => ({ name, count }))
-      .sort((a, b) => b.count - a.count);
-    const aiWinnerByName = new Map<string, { name: string; appearances: number }>();
-    for (const winner of unmatchedNamesList) {
-      const key = normalizeName(winner.name);
-      const existing = aiWinnerByName.get(key);
-      if (existing) {
-        existing.appearances += winner.count;
-      } else {
-        aiWinnerByName.set(key, { name: winner.name, appearances: winner.count });
+    const formatUnmatched = (names: Iterable<[string, number]>) => {
+      const counts = new Map<string, { name: string; count: number }>();
+      for (const [name, count] of names) {
+        const key = normalizeName(name);
+        const previous = counts.get(key);
+        if (previous) previous.count += count;
+        else counts.set(key, { name, count });
       }
-    }
-    const aiMarketWinners = Array.from(aiWinnerByName.values())
-      .sort((a, b) => b.appearances - a.appearances || a.name.localeCompare(b.name))
-      .slice(0, 3);
+      return [...counts.values()].sort((a, b) => b.count - a.count || a.name.localeCompare(b.name));
+    };
+    const unmatchedNamesList = formatUnmatched([...unmatchedByArea.values()].flatMap((names) => [...names]));
+    const marketWinnersByArea = new Map([...unmatchedByArea].map(([scope, names]) => [
+      scope,
+      formatUnmatched(names).slice(0, 3).map(({ name, count }) => ({ name, appearances: count })),
+    ]));
 
     const resolvedCompetitors: any[] = [];
 
     // A competitor comparison requires verified competitor place details. It
     // is intentionally deferred rather than guessing from a model answer.
     for (const b of top20) {
-      b.ai_market_winners = aiMarketWinners;
+      b.ai_market_winners = marketWinnersByArea.get(b.discovery.ai_scope || location) ?? [];
       const lowerCompetitors = resolvedCompetitors.filter(
         (c) => c.quality_score < b.quality.score
       );
@@ -2721,6 +2808,7 @@ async function runDiscoveryPipeline(
         outreach_eligible_candidates: 0,
         excluded_multi_location_candidates: excludedMultiLocationCount,
         scope: location,
+        ...(discoveryResponse.searchedAreas ? { search_areas: discoveryResponse.searchedAreas } : {}),
         market_coverage: "candidate_cohort_not_market_census",
       },
       results: top20,

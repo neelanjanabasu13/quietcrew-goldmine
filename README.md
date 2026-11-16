@@ -71,3 +71,12 @@ Goldmine reports the exact number of completed AI tests and never treats a parti
 ## Project status
 
 Goldmine is a hackathon prototype with a live Google Cloud deployment. The initial market is London and the product is focused on independent local-business prospecting.
+
+### Bounded discovery rollout
+
+Set `GOLDMINE_BOUNDED_DISCOVERY=true` in an engine test environment to compare
+the new search with the existing discovery. Google Geocoding must be enabled
+on `MAPS_API_KEY`, or supply a separate `GOLDMINE_GEOCODING_API_KEY`.
+Compare real area and trade pairs for local eligibility, nearby coverage and
+provider timing before enabling it in production. Runs with the switch off
+use the existing search and emit no bounded coverage labels.
